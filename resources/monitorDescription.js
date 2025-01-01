@@ -2,13 +2,13 @@
 
 import Gtk from "gi://Gtk";
 import Gdk from "gi://Gdk";
-//let { Gtk, Gdk } = imports.gi;
+//const { Gtk, Gdk } = imports.gi;
 
 Gtk.init();
-let monitors = Gdk.Display.get_default().get_monitors();
-let details = [];
-for (let m of monitors) {
-    let { x, y, width, height } = m.get_geometry();
+const monitors = Gdk.Display.get_default().get_monitors();
+const details = [];
+for (const m of monitors) {
+    const { x, y, width, height } = m.get_geometry();
     details.push({ name: m.get_description(), x, y, width, height });
 }
 
