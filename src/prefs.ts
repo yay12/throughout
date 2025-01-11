@@ -8,7 +8,7 @@ import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensio
 // @ts-expect-error "Module exists"
 import * as Config from 'resource:///org/gnome/Shell/Extensions/js/misc/config.js';
 
-var debug = logger('prefs');
+const debug = logger('prefs');
 
 /**
  * This function is called when the preferences window is first created to build
@@ -39,7 +39,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
     fillPreferencesWindow(window: Adw.PreferencesWindow) {
         Settings.initialize(this.getSettings());
 
-        var prefsPage = new Adw.PreferencesPage({
+        const prefsPage = new Adw.PreferencesPage({
             name: 'general',
             title: _('General'),
             iconName: 'dialog-information-symbolic',
@@ -47,34 +47,34 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         window.add(prefsPage);
 
         // Appearence section
-        var appearenceGroup = new Adw.PreferencesGroup({
+        const appearenceGroup = new Adw.PreferencesGroup({
             title: _('Appearance'),
             description: _('Configure the appearance of Tiling Shell'),
         });
         prefsPage.add(appearenceGroup);
 
-        var showIndicatorRow = this._buildSwitchRow(
+        const showIndicatorRow = this._buildSwitchRow(
             Settings.KEY_SHOW_INDICATOR,
             _('Show Indicator'),
             _('Whether to show the panel indicator'),
         );
         appearenceGroup.add(showIndicatorRow);
 
-        var innerGapsRow = this._buildSpinButtonRow(
+        const innerGapsRow = this._buildSpinButtonRow(
             Settings.KEY_INNER_GAPS,
             _('Inner gaps'),
             _('Gaps between windows'),
         );
         appearenceGroup.add(innerGapsRow);
 
-        var outerGapsRow = this._buildSpinButtonRow(
+        const outerGapsRow = this._buildSpinButtonRow(
             Settings.KEY_OUTER_GAPS,
             _('Outer gaps'),
             _('Gaps between a window and the monitor borders'),
         );
         appearenceGroup.add(outerGapsRow);
 
-        var blurRow = new Adw.ExpanderRow({
+        const blurRow = new Adw.ExpanderRow({
             title: _('Blur (experimental feature)'),
             subtitle: _(
                 'Apply blur effect to Snap Assistant and tile previews',
@@ -82,7 +82,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         });
         appearenceGroup.add(blurRow);
 
-        var snapAssistantThresholdRow = this._buildSpinButtonRow(
+        const snapAssistantThresholdRow = this._buildSpinButtonRow(
             Settings.KEY_SNAP_ASSISTANT_THRESHOLD,
             _('Snap Assistant threshold'),
             _(
@@ -108,7 +108,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             ),
         );
 
-        var windowBorderRow = new Adw.ExpanderRow({
+        const windowBorderRow = new Adw.ExpanderRow({
             title: _('Window border'),
             subtitle: _('Show a border around focused window'),
         });
@@ -144,7 +144,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             ),
         );
 
-        var animationsRow = new Adw.ExpanderRow({
+        const animationsRow = new Adw.ExpanderRow({
             title: _('Animations'),
             subtitle: _('Customize animations'),
         });
@@ -169,20 +169,20 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
 
         // Behaviour section
-        var behaviourGroup = new Adw.PreferencesGroup({
+        const behaviourGroup = new Adw.PreferencesGroup({
             title: _('Behaviour'),
             description: _('Configure the behaviour of Tiling Shell'),
         });
         prefsPage.add(behaviourGroup);
 
-        var snapAssistRow = this._buildSwitchRow(
+        const snapAssistRow = this._buildSwitchRow(
             Settings.KEY_SNAP_ASSIST,
             _('Enable Snap Assistant'),
             _('Move the window on top of the screen to snap assist it'),
         );
         behaviourGroup.add(snapAssistRow);
 
-        var enableTilingSystemRow = this._buildSwitchRow(
+        const enableTilingSystemRow = this._buildSwitchRow(
             Settings.KEY_TILING_SYSTEM,
             _('Enable Tiling System'),
             _('Hold the activation key while moving a window to tile it'),
@@ -194,7 +194,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         behaviourGroup.add(enableTilingSystemRow);
 
-        var tilingSystemDeactivationRow = this._buildDropDownRow(
+        const tilingSystemDeactivationRow = this._buildDropDownRow(
             _('Tiling System deactivation key'),
             _(
                 'Hold the deactivation key while moving a window to deactivate the tiling system',
@@ -205,7 +205,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         behaviourGroup.add(tilingSystemDeactivationRow);
 
-        var spanMultipleTilesRow = this._buildSwitchRow(
+        const spanMultipleTilesRow = this._buildSwitchRow(
             Settings.KEY_SPAN_MULTIPLE_TILES,
             _('Span multiple tiles'),
             _('Hold the activation key to span multiple tiles'),
@@ -217,14 +217,14 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         behaviourGroup.add(spanMultipleTilesRow);
 
-        var autoTilingRow = this._buildSwitchRow(
+        const autoTilingRow = this._buildSwitchRow(
             Settings.KEY_ENABLE_AUTO_TILING,
             _('Enable Auto Tiling'),
             _('Automatically tile new windows to the best tile'),
         );
         behaviourGroup.add(autoTilingRow);
 
-        var resizeComplementingRow = this._buildSwitchRow(
+        const resizeComplementingRow = this._buildSwitchRow(
             Settings.KEY_RESIZE_COMPLEMENTING_WINDOWS,
             _('Enable auto-resize of the complementing tiled windows'),
             _(
@@ -233,7 +233,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         behaviourGroup.add(resizeComplementingRow);
 
-        var restoreToOriginalSizeRow = this._buildSwitchRow(
+        const restoreToOriginalSizeRow = this._buildSwitchRow(
             Settings.KEY_RESTORE_WINDOW_ORIGINAL_SIZE,
             _('Restore window size'),
             _(
@@ -242,7 +242,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         behaviourGroup.add(restoreToOriginalSizeRow);
 
-        var overrideWindowMenuRow = this._buildSwitchRow(
+        const overrideWindowMenuRow = this._buildSwitchRow(
             Settings.KEY_OVERRIDE_WINDOW_MENU,
             _('Add snap assistant and auto-tile buttons to window menu'),
             _(
@@ -252,7 +252,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         behaviourGroup.add(overrideWindowMenuRow);
 
         // Screen Edges section
-        var activeScreenEdgesGroup = new Adw.PreferencesGroup({
+        const activeScreenEdgesGroup = new Adw.PreferencesGroup({
             title: _('Screen Edges'),
             description: _(
                 'Drag windows against the top, left and right screen edges to resize them',
@@ -268,7 +268,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             'active',
         );
 
-        var topEdgeMaximize = this._buildSwitchRow(
+        const topEdgeMaximize = this._buildSwitchRow(
             Settings.KEY_TOP_EDGE_MAXIMIZE,
             _('Drag against top edge to maximize window'),
             _('Drag windows against the top edge to maximize them'),
@@ -280,7 +280,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         activeScreenEdgesGroup.add(topEdgeMaximize);
 
-        var quarterTiling = this._buildScaleRow(
+        const quarterTiling = this._buildScaleRow(
             _('Quarter tiling activation area'),
             _('Activation area to trigger quarter tiling (%% of the screen)'),
             (sc: Gtk.Scale) => {
@@ -301,13 +301,13 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         prefsPage.add(activeScreenEdgesGroup);
 
         // Windows suggestions section
-        var windowsSuggestionsGroup = new Adw.PreferencesGroup({
+        const windowsSuggestionsGroup = new Adw.PreferencesGroup({
             title: _('Windows suggestions'),
             description: _('Enable and disable windows suggestions'),
         });
         prefsPage.add(behaviourGroup);
 
-        var tilingSystemWindowSuggestionRow = this._buildSwitchRow(
+        const tilingSystemWindowSuggestionRow = this._buildSwitchRow(
             Settings.KEY_ENABLE_TILING_SYSTEM_WINDOWS_SUGGESTIONS,
             _('Enable window suggestions for the tiling system'),
             _(
@@ -316,7 +316,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         windowsSuggestionsGroup.add(tilingSystemWindowSuggestionRow);
 
-        var snapAssistWindowSuggestionRow = this._buildSwitchRow(
+        const snapAssistWindowSuggestionRow = this._buildSwitchRow(
             Settings.KEY_ENABLE_SNAP_ASSISTANT_WINDOWS_SUGGESTIONS,
             _('Enable window suggestions for the snap assistant'),
             _(
@@ -325,7 +325,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         windowsSuggestionsGroup.add(snapAssistWindowSuggestionRow);
 
-        var screenEdgesWindowSuggestionRow = this._buildSwitchRow(
+        const screenEdgesWindowSuggestionRow = this._buildSwitchRow(
             Settings.KEY_ENABLE_SCREEN_EDGES_WINDOWS_SUGGESTIONS,
             _('Enable window suggestions for screen edge snapping'),
             _(
@@ -337,13 +337,13 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         prefsPage.add(windowsSuggestionsGroup);
 
         // Layouts section
-        var layoutsGroup = new Adw.PreferencesGroup({
+        const layoutsGroup = new Adw.PreferencesGroup({
             title: _('Layouts'),
             description: _('Configure the layouts of Tiling Shell'),
         });
         prefsPage.add(layoutsGroup);
 
-        var editLayoutsBtn = this._buildButtonRow(
+        const editLayoutsBtn = this._buildButtonRow(
             _('Edit layouts'),
             _('Edit layouts'),
             _('Open the layouts editor'),
@@ -351,12 +351,12 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         layoutsGroup.add(editLayoutsBtn);
 
-        var exportLayoutsBtn = this._buildButtonRow(
+        const exportLayoutsBtn = this._buildButtonRow(
             _('Export layouts'),
             _('Export layouts'),
             _('Export layouts to a file'),
             () => {
-                var fc = this._buildFileChooserDialog(
+                const fc = this._buildFileChooserDialog(
                     _('Export layouts'),
                     Gtk.FileChooserAction.SAVE,
                     window,
@@ -369,13 +369,13 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                     (_source: Gtk.FileChooserNative, response_id: number) => {
                         try {
                             if (response_id === Gtk.ResponseType.ACCEPT) {
-                                var file = _source.get_file();
+                                const file = _source.get_file();
                                 if (!file) throw new Error('no file selected');
 
                                 debug(
                                     `Create file with path ${file.get_path()}`,
                                 );
-                                var content = JSON.stringify(
+                                const content = JSON.stringify(
                                     Settings.get_layouts_json(),
                                 );
                                 file.replace_contents_bytes_async(
@@ -408,12 +408,12 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         layoutsGroup.add(exportLayoutsBtn);
 
-        var importLayoutsBtn = this._buildButtonRow(
+        const importLayoutsBtn = this._buildButtonRow(
             _('Import layouts'),
             _('Import layouts'),
             _('Import layouts from a file'),
             () => {
-                var fc = this._buildFileChooserDialog(
+                const fc = this._buildFileChooserDialog(
                     _('Select layouts file'),
                     Gtk.FileChooserAction.OPEN,
                     window,
@@ -426,13 +426,13 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                     (_source: Gtk.FileChooserNative, response_id: number) => {
                         try {
                             if (response_id === Gtk.ResponseType.ACCEPT) {
-                                var file = _source.get_file();
+                                const file = _source.get_file();
                                 if (!file) {
                                     _source.destroy();
                                     return;
                                 }
                                 debug(`Selected path ${file.get_path()}`);
-                                var [success, content] =
+                                const [success, content] =
                                     file.load_contents(null);
                                 if (success) {
                                     let importedLayouts = JSON.parse(
@@ -449,7 +449,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                                     importedLayouts = importedLayouts.filter(
                                         (layout) => layout.tiles.length > 0,
                                     );
-                                    var newLayouts =
+                                    const newLayouts =
                                         Settings.get_layouts_json();
                                     newLayouts.push(...importedLayouts);
                                     Settings.save_layouts_json(newLayouts);
@@ -470,14 +470,14 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         layoutsGroup.add(importLayoutsBtn);
 
-        var resetBtn = this._buildButtonRow(
+        const resetBtn = this._buildButtonRow(
             _('Reset layouts'),
             _('Reset layouts'),
             _('Bring back the default layouts'),
             () => {
                 Settings.reset_layouts_json();
-                var layouts = Settings.get_layouts_json();
-                var newSelectedLayouts = Settings.get_selected_layouts().map(
+                const layouts = Settings.get_layouts_json();
+                const newSelectedLayouts = Settings.get_selected_layouts().map(
                     (monitors_selected) =>
                         monitors_selected.map(() => layouts[0].id),
                 );
@@ -488,7 +488,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         layoutsGroup.add(resetBtn);
 
         // Keybindings section
-        var keybindingsGroup = new Adw.PreferencesGroup({
+        const keybindingsGroup = new Adw.PreferencesGroup({
             title: _('Keybindings'),
             description: _(
                 'Use hotkeys to perform actions on the focused window',
@@ -505,8 +505,8 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         prefsPage.add(keybindingsGroup);
 
-        var gioSettings = this.getSettings();
-        var keybindings: [
+        const gioSettings = this.getSettings();
+        const keybindings: [
             string, // settings key
             string, // title
             string | undefined, // subtitle
@@ -656,7 +656,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             ([settingsKey, title, subtitle, isSet, isOnMainPage]) => {
                 if (!isSet && !isOnMainPage) return;
 
-                var row = this._buildShortcutButtonRow(
+                const row = this._buildShortcutButtonRow(
                     settingsKey,
                     gioSettings,
                     title,
@@ -671,7 +671,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                 keybindingsGroup.add(row);
             },
         );
-        var openKeybindingsDialogRow = new Adw.ActionRow({
+        const openKeybindingsDialogRow = new Adw.ActionRow({
             title: _('View and Customize all the Shortcuts'),
             activatable: true,
         });
@@ -688,7 +688,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         keybindingsGroup.add(openKeybindingsDialogRow);
 
-        var keybindingsDialog = new Adw.PreferencesWindow({
+        const keybindingsDialog = new Adw.PreferencesWindow({
             searchEnabled: true,
             modal: true,
             hide_on_close: true,
@@ -699,18 +699,18 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         openKeybindingsDialogRow.connect('activated', () =>
             keybindingsDialog.present(),
         );
-        var keybindingsPage = new Adw.PreferencesPage({
+        const keybindingsPage = new Adw.PreferencesPage({
             name: _('View and Customize Shortcuts'),
             title: _('View and Customize Shortcuts'),
             iconName: 'dialog-information-symbolic',
         });
         keybindingsDialog.add(keybindingsPage);
-        var keybindingsDialogGroup = new Adw.PreferencesGroup();
+        const keybindingsDialogGroup = new Adw.PreferencesGroup();
         keybindingsPage.add(keybindingsDialogGroup);
 
         // draw all the keybindings in the dialog
         keybindings.forEach(([settingsKey, title, subtitle]) => {
-            var row = this._buildShortcutButtonRow(
+            const row = this._buildShortcutButtonRow(
                 settingsKey,
                 gioSettings,
                 title,
@@ -725,7 +725,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             keybindingsDialogGroup.add(row);
         });
 
-        var wrapAroundRow = this._buildSwitchRow(
+        const wrapAroundRow = this._buildSwitchRow(
             Settings.KEY_WRAPAROUND_FOCUS,
             _('Enable next/previous window focus to wrap around'),
             _(
@@ -735,7 +735,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         keybindingsGroup.add(wrapAroundRow);
 
         // Import/export/reset section
-        var importExportGroup = new Adw.PreferencesGroup({
+        const importExportGroup = new Adw.PreferencesGroup({
             title: _('Import, export and reset'),
             description: _(
                 'Import, export and reset the settings of Tiling Shell',
@@ -743,12 +743,12 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         });
         prefsPage.add(importExportGroup);
 
-        var exportSettingsBtn = this._buildButtonRow(
+        const exportSettingsBtn = this._buildButtonRow(
             _('Export settings'),
             _('Export settings'),
             _('Export settings to a file'),
             () => {
-                var fc = this._buildFileChooserDialog(
+                const fc = this._buildFileChooserDialog(
                     _('Export settings to a text file'),
                     Gtk.FileChooserAction.SAVE,
                     window,
@@ -761,16 +761,16 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                     (_source: Gtk.FileChooserNative, response_id: number) => {
                         try {
                             if (response_id === Gtk.ResponseType.ACCEPT) {
-                                var file = _source.get_file();
+                                const file = _source.get_file();
                                 if (!file) throw new Error('no file selected');
 
                                 debug(
                                     `Create file with path ${file.get_path()}`,
                                 );
-                                var settingsExport = new SettingsExport(
+                                const settingsExport = new SettingsExport(
                                     this.getSettings(),
                                 );
-                                var content = settingsExport.exportToString();
+                                const content = settingsExport.exportToString();
                                 file.replace_contents_bytes_async(
                                     new TextEncoder().encode(content),
                                     null,
@@ -802,12 +802,12 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         importExportGroup.add(exportSettingsBtn);
 
-        var importSettingsBtn = this._buildButtonRow(
+        const importSettingsBtn = this._buildButtonRow(
             _('Import settings'),
             _('Import settings'),
             _('Import settings from a file'),
             () => {
-                var fc = this._buildFileChooserDialog(
+                const fc = this._buildFileChooserDialog(
                     _('Select a text file to import from'),
                     Gtk.FileChooserAction.OPEN,
                     window,
@@ -820,19 +820,19 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
                     (_source: Gtk.FileChooserNative, response_id: number) => {
                         try {
                             if (response_id === Gtk.ResponseType.ACCEPT) {
-                                var file = _source.get_file();
+                                const file = _source.get_file();
                                 if (!file) {
                                     _source.destroy();
                                     return;
                                 }
                                 debug(`Selected path ${file.get_path()}`);
-                                var [success, content] =
+                                const [success, content] =
                                     file.load_contents(null);
                                 if (success) {
-                                    var imported = new TextDecoder(
+                                    const imported = new TextDecoder(
                                         'utf-8',
                                     ).decode(content);
-                                    var settingsExport = new SettingsExport(
+                                    const settingsExport = new SettingsExport(
                                         this.getSettings(),
                                     );
                                     settingsExport.importFromString(imported);
@@ -853,7 +853,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         );
         importExportGroup.add(importSettingsBtn);
 
-        var resetSettingsBtn = this._buildButtonRow(
+        const resetSettingsBtn = this._buildButtonRow(
             _('Reset settings'),
             _('Reset settings'),
             _('Bring back the default settings'),
@@ -863,10 +863,10 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         importExportGroup.add(resetSettingsBtn);
 
         // footer
-        var footerGroup = new Adw.PreferencesGroup();
+        const footerGroup = new Adw.PreferencesGroup();
         prefsPage.add(footerGroup);
 
-        var buttons = new Gtk.Box({
+        const buttons = new Gtk.Box({
             hexpand: false,
             spacing: 8,
             margin_bottom: 16,
@@ -928,11 +928,11 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         subtitle: string,
         suffix?: Gtk.Widget,
     ): Adw.ActionRow {
-        var gtkSwitch = new Gtk.Switch({
+        const gtkSwitch = new Gtk.Switch({
             vexpand: false,
             valign: Gtk.Align.CENTER,
         });
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: gtkSwitch,
@@ -951,14 +951,14 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         onChange: (_: ActivationKey) => void,
         styleClass?: string,
     ): Adw.ActionRow {
-        var dropDown = this._buildActivationKeysDropDown(
+        const dropDown = this._buildActivationKeysDropDown(
             initialValue,
             onChange,
             styleClass,
         );
         dropDown.set_vexpand(false);
         dropDown.set_valign(Gtk.Align.CENTER);
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: dropDown,
@@ -975,10 +975,10 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         min = 0,
         max = 32,
     ) {
-        var spinBtn = Gtk.SpinButton.new_with_range(min, max, 1);
+        const spinBtn = Gtk.SpinButton.new_with_range(min, max, 1);
         spinBtn.set_vexpand(false);
         spinBtn.set_valign(Gtk.Align.CENTER);
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: spinBtn,
@@ -996,12 +996,12 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         onClick: () => void,
         styleClass?: string,
     ) {
-        var btn = Gtk.Button.new_with_label(label);
+        const btn = Gtk.Button.new_with_label(label);
         if (styleClass) btn.add_css_class(styleClass);
         btn.connect('clicked', onClick);
         btn.set_vexpand(false);
         btn.set_valign(Gtk.Align.CENTER);
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: btn,
@@ -1036,21 +1036,21 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         onChange: (_: ActivationKey) => void,
         styleClass?: string,
     ) {
-        var options = new Gtk.StringList();
-        var activationKeys = [
+        const options = new Gtk.StringList();
+        const activationKeys = [
             ActivationKey.CTRL,
             ActivationKey.ALT,
             ActivationKey.SUPER,
         ];
         activationKeys.forEach((k) => options.append(ActivationKey[k]));
         options.append('(None)');
-        var dropdown = new Gtk.DropDown({
+        const dropdown = new Gtk.DropDown({
             model: options,
             selected: initialValue,
         });
         dropdown.connect('notify::selected-item', (dd: Gtk.DropDown) => {
-            var index = dd.get_selected();
-            var selected =
+            const index = dd.get_selected();
+            const selected =
                 index < 0 || index >= activationKeys.length
                     ? ActivationKey.NONE
                     : activationKeys[index];
@@ -1063,7 +1063,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
     }
 
     _buildLinkButton(label: string, uri: string): Gtk.Button {
-        var btn = new Gtk.Button({
+        const btn = new Gtk.Button({
             label,
             hexpand: false,
         });
@@ -1080,11 +1080,11 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         subtitle: string | undefined,
         styleClass?: string,
     ) {
-        var btn = new ShortcutSettingButton(settingsKey, gioSettings);
+        const btn = new ShortcutSettingButton(settingsKey, gioSettings);
         if (styleClass) btn.add_css_class(styleClass);
         btn.set_vexpand(false);
         btn.set_valign(Gtk.Align.CENTER);
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             activatableWidget: btn,
         });
@@ -1104,7 +1104,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         step: number,
         /* styleClass?: string,*/
     ): Adw.ActionRow {
-        var scale = Gtk.Scale.new_with_range(
+        const scale = Gtk.Scale.new_with_range(
             Gtk.Orientation.HORIZONTAL,
             min,
             max,
@@ -1113,7 +1113,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         scale.set_value(initialValue);
         scale.set_vexpand(false);
         scale.set_valign(Gtk.Align.CENTER);
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: scale,
@@ -1127,7 +1127,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
     }
 
     _getRGBAFromString(str: string): Gdk.RGBA {
-        var rgba = new Gdk.RGBA();
+        const rgba = new Gdk.RGBA();
         rgba.parse(str);
         return rgba;
     }
@@ -1138,7 +1138,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         rgba: Gdk.RGBA,
         onChange: (s: string) => void,
     ): Adw.ActionRow {
-        var colorButton = new Gtk.ColorButton({
+        const colorButton = new Gtk.ColorButton({
             rgba,
             use_alpha: true,
             valign: Gtk.Align.CENTER,
@@ -1146,7 +1146,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         colorButton.connect('color-set', () => {
             onChange(colorButton.get_rgba().to_string());
         });
-        var adwRow = new Adw.ActionRow({
+        const adwRow = new Adw.ActionRow({
             title,
             subtitle,
             activatableWidget: colorButton,
@@ -1167,7 +1167,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
             response_id: number,
         ) => void,
     ): Gtk.FileChooserNative {
-        var fc = new Gtk.FileChooserNative({
+        const fc = new Gtk.FileChooserNative({
             title,
             action,
             select_multiple: false,
@@ -1178,7 +1178,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
         window.connect('map', () => {
             fc.set_transient_for(window);
         });
-        var [major] = Config.PACKAGE_VERSION.split('.').map((s: string) =>
+        const [major] = Config.PACKAGE_VERSION.split('.').map((s: string) =>
             Number(s),
         );
         // due to a bug, file chooser doesn't open on GNOME 42 when a filter is set
@@ -1191,7 +1191,7 @@ export default class TilingShellExtensionPreferences extends ExtensionPreference
     }
 }
 
-var ShortcutSettingButton = class extends Gtk.Button {
+const ShortcutSettingButton = class extends Gtk.Button {
     static {
         GObject.registerClass(
             {
@@ -1257,9 +1257,9 @@ var ShortcutSettingButton = class extends Gtk.Button {
     }
 
     _onActivated(widget: Gtk.Widget) {
-        var ctl = new Gtk.EventControllerKey();
+        const ctl = new Gtk.EventControllerKey();
 
-        var content = new Adw.StatusPage({
+        const content = new Adw.StatusPage({
             title: _('New accelerator…'),
             // description: this._description,
             icon_name: 'preferences-desktop-keyboard-shortcuts-symbolic',
@@ -1311,7 +1311,7 @@ var ShortcutSettingButton = class extends Gtk.Button {
             this._editor?.destroy();
             return Gdk.EVENT_STOP;
         } else {
-            var val = Gtk.accelerator_name_with_keycode(
+            const val = Gtk.accelerator_name_with_keycode(
                 null,
                 keyval,
                 keycode,
@@ -1406,12 +1406,12 @@ var ShortcutSettingButton = class extends Gtk.Button {
     }
 
     private drawFunc(superDa: Gtk.DrawingArea, ctx: Cairo.Context) {
-        var da = superDa as LayoutWidget;
-        var maxHeight = da.get_allocated_height();
-        var maxWidth = da.get_allocated_width();
+        const da = superDa as LayoutWidget;
+        const maxHeight = da.get_allocated_height();
+        const maxWidth = da.get_allocated_width();
 
-        //var color = da.get_style_context().lookup_color("yellow");
-        var color = da.get_style_context().get_color();
+        //const color = da.get_style_context().lookup_color("yellow");
+        const color = da.get_style_context().get_color();
         //@ts-ignore
         ctx.setSourceRGBA(color.red, color.green, color.blue, color.alpha);
         // Because the cairo module isn't real, we have to use these to ignore `any`.
@@ -1425,7 +1425,7 @@ var ShortcutSettingButton = class extends Gtk.Button {
         ctx.setLineWidth(1);
 
         //da.setSourceRGBA(ctx, dividerColor);
-        var gaps = 8;
+        const gaps = 8;
 
         this._layout.tiles.forEach(tile => {
             //@ts-ignore
