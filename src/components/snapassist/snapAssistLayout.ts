@@ -40,13 +40,13 @@ export default class SnapAssistLayout extends LayoutWidget<SnapAssistTile> {
         x: number;
         y: number;
     }): SnapAssistTile | undefined {
-        var [x, y] = this.get_transformed_position();
+        const [x, y] = this.get_transformed_position();
 
         for (let i = 0; i < this._previews.length; i++) {
-            var preview = this._previews[i];
-            var pos = { x: x + preview.rect.x, y: y + preview.rect.y };
+            const preview = this._previews[i];
+            const pos = { x: x + preview.rect.x, y: y + preview.rect.y };
 
-            var isHovering =
+            const isHovering =
                 cursorPos.x >= pos.x &&
                 cursorPos.x <= pos.x + preview.rect.width &&
                 cursorPos.y >= pos.y &&
