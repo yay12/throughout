@@ -12,14 +12,14 @@ export default class EditingMenu implements CurrentMenu {
     constructor(indicator: Indicator) {
         this._indicator = indicator;
 
-        let boxLayout = new St.BoxLayout({
+        const boxLayout = new St.BoxLayout({
             styleClass: 'buttons-box-layout',
             xExpand: true,
             style: 'spacing: 8px',
         });
         setWidgetOrientation(boxLayout, true);
 
-        let openMenuBtn = IndicatorUtils.createButton(
+        const openMenuBtn = IndicatorUtils.createButton(
             'menu-symbolic',
             _('Menu'),
             this._indicator.path,
@@ -27,7 +27,7 @@ export default class EditingMenu implements CurrentMenu {
         openMenuBtn.connect('clicked', () => this._indicator.openMenu(false));
         boxLayout.add_child(openMenuBtn);
 
-        let infoMenuBtn = IndicatorUtils.createButton(
+        const infoMenuBtn = IndicatorUtils.createButton(
             'info-symbolic',
             _('Info'),
             this._indicator.path,
@@ -35,7 +35,7 @@ export default class EditingMenu implements CurrentMenu {
         infoMenuBtn.connect('clicked', () => this._indicator.openMenu(true));
         boxLayout.add_child(infoMenuBtn);
 
-        let saveBtn = IndicatorUtils.createButton(
+        const saveBtn = IndicatorUtils.createButton(
             'save-symbolic',
             _('Save'),
             this._indicator.path,
@@ -46,7 +46,7 @@ export default class EditingMenu implements CurrentMenu {
         });
         boxLayout.add_child(saveBtn);
 
-        let cancelBtn = IndicatorUtils.createButton(
+        const cancelBtn = IndicatorUtils.createButton(
             'cancel-symbolic',
             _('Cancel'),
             this._indicator.path,
@@ -57,7 +57,7 @@ export default class EditingMenu implements CurrentMenu {
         });
         boxLayout.add_child(cancelBtn);
 
-        let menuItem = new PopupMenu.PopupBaseMenuItem({
+        const menuItem = new PopupMenu.PopupBaseMenuItem({
             style_class: 'indicator-menu-item',
         });
         menuItem.add_child(boxLayout);
