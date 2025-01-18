@@ -12,7 +12,7 @@ import Tile from './Tile';
 import TileUtils from './TileUtils';
 import { registerGObjectClass } from '@utils/gjs';
 
-var debug = logger('LayoutWidget');
+const debug = logger('LayoutWidget');
 
 // export module LayoutWidget {
 export interface LayoutWidgetConstructorProperties
@@ -73,7 +73,7 @@ export default class LayoutWidget<
     }
 
     protected draw_layout(): void {
-        var containerWithoutOuterGaps = buildRectangle({
+        const containerWithoutOuterGaps = buildRectangle({
             x: this._outerGaps.left + this._containerRect.x,
             y: this._outerGaps.top + this._containerRect.y,
             width:
@@ -86,11 +86,11 @@ export default class LayoutWidget<
                 this._outerGaps.bottom,
         });
         this._previews = this._layout.tiles.map((tile) => {
-            var tileRect = TileUtils.apply_props(
+            const tileRect = TileUtils.apply_props(
                 tile,
                 containerWithoutOuterGaps,
             );
-            var { gaps, isTop, isRight, isBottom, isLeft } = buildTileGaps(
+            const { gaps, isTop, isRight, isBottom, isLeft } = buildTileGaps(
                 tileRect,
                 this._innerGaps,
                 this._outerGaps,
