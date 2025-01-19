@@ -23,7 +23,7 @@ export class ResizingManager {
                 window: Meta.Window,
                 grabOp: Meta.GrabOp,
             ) => {
-                var moving =
+                const moving =
                     grabOp === Meta.GrabOp.KEYBOARD_MOVING ||
                     grabOp === Meta.GrabOp.MOVING;
                 if (moving || !Settings.RESIZE_COMPLEMENTING_WINDOWS) return;
@@ -40,7 +40,7 @@ export class ResizingManager {
                 window: Meta.Window,
                 grabOp: Meta.GrabOp,
             ) => {
-                var moving =
+                const moving =
                     grabOp === Meta.GrabOp.KEYBOARD_MOVING ||
                     grabOp === Meta.GrabOp.MOVING;
                 if (moving) return;
@@ -62,8 +62,8 @@ export class ResizingManager {
         )
             return;
 
-        var verticalSide: [boolean, St.Side] = [false, 0];
-        var horizontalSide: [boolean, St.Side] = [false, 0];
+        const verticalSide: [boolean, St.Side] = [false, 0];
+        const horizontalSide: [boolean, St.Side] = [false, 0];
         switch (grabOp) {
             case Meta.GrabOp.RESIZING_N:
             case Meta.GrabOp.RESIZING_NE:
@@ -106,7 +106,7 @@ export class ResizingManager {
         }
         if (!verticalSide[0] && !horizontalSide[0]) return;
 
-        var otherTiledWindows = getWindows().filter(
+        const otherTiledWindows = getWindows().filter(
             (otherWindow) =>
                 otherWindow &&
                 (otherWindow as ExtendedWindow).assignedTile &&
@@ -115,14 +115,14 @@ export class ResizingManager {
         );
         if (otherTiledWindows.length === 0) return;
 
-        var verticalAdjacentWindows = verticalSide[0]
+        const verticalAdjacentWindows = verticalSide[0]
             ? this._findAdjacent(
                   window,
                   verticalSide[1],
                   new Set(otherTiledWindows),
               )
             : [];
-        var horizontalAdjacentWindows = horizontalSide[0]
+        const horizontalAdjacentWindows = horizontalSide[0]
             ? this._findAdjacent(
                   window,
                   horizontalSide[1],
@@ -130,7 +130,7 @@ export class ResizingManager {
               )
             : [];
 
-        var windowsMap: Map<
+        const windowsMap: Map<
             Meta.Window,
             [Meta.Window, Mtk.Rectangle, number, number]
         > = new Map();
@@ -145,7 +145,7 @@ export class ResizingManager {
         });
 
         horizontalAdjacentWindows.forEach(([otherWin, sideOtherWin]) => {
-            var val = windowsMap.get(otherWin);
+            const val = windowsMap.get(otherWin);
             if (val) {
                 val[3] = sideOtherWin;
             } else {
@@ -158,7 +158,7 @@ export class ResizingManager {
             }
         });
 
-        var windowsToResize = Array.from(windowsMap.values());
+        const windowsToResize = Array.from(windowsMap.values());
 
         this._signals.connect(
             window,
@@ -192,16 +192,16 @@ export class ResizingManager {
         side: St.Side,
         remainingWindows: Set<Meta.Window>,
     ): [Meta.Window, St.Side][] {
-        var result: [Meta.Window, St.Side][] = [];
-        var adjacentWindows: Meta.Window[] = [];
-        var windowRect = window.get_frame_rect();
-        var borderRect = windowRect.copy();
-        var innerGaps = Settings.get_inner_gaps();
+        const result: [Meta.Window, St.Side][] = [];
+        const adjacentWindows: Meta.Window[] = [];
+        const windowRect = window.get_frame_rect();
+        const borderRect = windowRect.copy();
+        const innerGaps = Settings.get_inner_gaps();
         if (innerGaps.top === 0) innerGaps.top = 2;
         if (innerGaps.bottom === 0) innerGaps.bottom = 2;
         if (innerGaps.left === 0) innerGaps.left = 2;
         if (innerGaps.right === 0) innerGaps.right = 2;
-        var errorFactor = innerGaps.right * 4;
+        const errorFactor = innerGaps.right * 4;
         switch (side) {
             case St.Side.TOP:
                 borderRect.height = innerGaps.top + errorFactor;
@@ -227,11 +227,11 @@ export class ResizingManager {
         debugWidget.show();
         global.windowGroup.add_child(debugWidget);*/
 
-        var oppositeSide = this._oppositeSide(side);
-        var newRemainingWindows: Set<Meta.Window> = new Set();
+        const oppositeSide = this._oppositeSide(side);
+        const newRemainingWindows: Set<Meta.Window> = new Set();
         remainingWindows.forEach((otherWin) => {
-            var otherWinRect = otherWin.get_frame_rect();
-            // eslint-disable-next-line prefer-var
+            const otherWinRect = otherWin.get_frame_rect();
+            // eslint-disable-next-line prefer-const
             let [hasIntersection, intersection] = otherWin
                 .get_frame_rect()
                 .intersect(borderRect);
@@ -286,9 +286,9 @@ export class ResizingManager {
         resizeHorizontalSide: number,
         windowsToResize: [Meta.Window, Mtk.Rectangle, number, number][],
     ) {
-        var currentRect = window.get_frame_rect();
+        const currentRect = window.get_frame_rect();
 
-        var resizedRect = {
+        const resizedRect = {
             x: currentRect.x - startingRect.x,
             y: currentRect.y - startingRect.y,
             width: currentRect.width - startingRect.width,
@@ -297,13 +297,13 @@ export class ResizingManager {
 
         windowsToResize.forEach(
             ([otherWindow, otherWindowRect, verticalSide, horizontalSide]) => {
-                var isSameVerticalSide =
+                const isSameVerticalSide =
                     verticalSide !== -1 && verticalSide === resizeVerticalSide;
-                var isSameHorizontalSide =
+                const isSameHorizontalSide =
                     horizontalSide !== -1 &&
                     horizontalSide === resizeHorizontalSide;
 
-                var rect = [
+                const rect = [
                     otherWindowRect.x,
                     otherWindowRect.y,
                     otherWindowRect.width,
@@ -364,8 +364,8 @@ export class ResizingManager {
 }
 
 /*
-var WINDOW_CLONE_RESIZE_ANIMATION_TIME = 150;
-var APP_ICON_SIZE = 96;
+const WINDOW_CLONE_RESIZE_ANIMATION_TIME = 150;
+const APP_ICON_SIZE = 96;
 
 @registerGObjectClass
 class WindowClone extends St.Widget {
@@ -378,7 +378,7 @@ class WindowClone extends St.Widget {
 
         this._clone = this._createWindowClone(window);
         this.add_child(this._clone);
-        var sigma = 36;
+        const sigma = 36;
         this._clone.add_effect_with_name('blur', new Shell.BlurEffect({
             //@ts-ignore
             sigma: sigma,
@@ -387,7 +387,7 @@ class WindowClone extends St.Widget {
             mode: Shell.BlurMode.ACTOR, // blur the widget
         }));
 
-        var box = new St.BoxLayout({
+        const box = new St.BoxLayout({
             xAlign: Clutter.ActorAlign.CENTER,
             yAlign: Clutter.ActorAlign.CENTER,
             xExpand: true,
@@ -404,7 +404,7 @@ class WindowClone extends St.Widget {
         }));
         this.add_child(box);
 
-        var windowRect = window.get_frame_rect();
+        const windowRect = window.get_frame_rect();
         this.set_position(windowRect.x, windowRect.y);
         this.set_size(windowRect.width, windowRect.height);
 
@@ -413,12 +413,12 @@ class WindowClone extends St.Widget {
 
     private _createWindowClone(window: Meta.Window) {
         //@ts-ignore
-        //var actor: Clutter.Actor = window.get_compositor_private();
+        //const actor: Clutter.Actor = window.get_compositor_private();
         //return new Clutter.Clone({
         //    source: actor
         //});
         //@ts-ignore
-        var actor: Clutter.Actor = window.get_compositor_private();
+        const actor: Clutter.Actor = window.get_compositor_private();
 
         //@ts-ignore
         let actorContent = actor.paint_to_content(window.get_frame_rect());
@@ -435,7 +435,7 @@ class WindowClone extends St.Widget {
 
     private _createAppIcon(window: Meta.Window, size: number) {
         let tracker = Shell.WindowTracker.get_default();
-        var app = tracker.get_window_app(window);
+        const app = tracker.get_window_app(window);
         let appIcon = app
             ? app.create_icon_texture(size)
             : new St.Icon({ iconName: 'application-x-executable', iconSize: size });
