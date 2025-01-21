@@ -42,11 +42,11 @@ export default class LayoutEditor extends St.Widget {
         );
 
         if (enableScaling) {
-            const scalingFactor = getMonitorScalingFactor(monitor.index);
+            var scalingFactor = getMonitorScalingFactor(monitor.index);
             enableScalingFactorSupport(this, scalingFactor);
         }
 
-        const workArea = Main.layoutManager.getWorkAreaForMonitor(
+        var workArea = Main.layoutManager.getWorkAreaForMonitor(
             monitor.index,
         );
         this.set_position(workArea.x, workArea.y);
@@ -94,12 +94,12 @@ export default class LayoutEditor extends St.Widget {
     }
 
     private _drawEditor() {
-        const groups = new Map<number, EditableTilePreview[]>();
+        var groups = new Map<number, EditableTilePreview[]>();
 
         // render layout's tile and group tiles
         this._layout.tiles.forEach((tile) => {
-            const rect = TileUtils.apply_props(tile, this._containerRect);
-            const prev = this._buildEditableTile(tile, rect);
+            var rect = TileUtils.apply_props(tile, this._containerRect);
+            var prev = this._buildEditableTile(tile, rect);
             tile.groups.forEach((id) => {
                 if (!groups.has(id)) groups.set(id, []);
                 groups.get(id)?.push(prev);
@@ -127,7 +127,7 @@ export default class LayoutEditor extends St.Widget {
             let count = 0;
             let coord = -1;
             let horizontal = false;
-            for (const line of lines) {
+            for (var line of lines) {
                 count += line.end ? -1 : 1;
                 if (count === 0 && line !== lines[lines.length - 1]) {
                     coord = line.r;
@@ -157,7 +157,7 @@ export default class LayoutEditor extends St.Widget {
                         a.c - b.c !== 0 ? a.c - b.c : a.end ? -1 : 1,
                     );
                 count = 0;
-                for (const line of lines) {
+                for (var line of lines) {
                     count += line.end ? -1 : 1;
                     if (count === 0 && line !== lines[lines.length - 1]) {
                         coord = line.r;
@@ -165,7 +165,7 @@ export default class LayoutEditor extends St.Widget {
                     }
                 }
             }
-            const slider = this._buildSlider(horizontal, coord, groupdId);
+            var slider = this._buildSlider(horizontal, coord, groupdId);
             this._sliders.push(slider);
             tiles.forEach((editable) => slider.addTile(editable));
         });
@@ -175,13 +175,13 @@ export default class LayoutEditor extends St.Widget {
         tile: Tile,
         rect: Mtk.Rectangle,
     ): EditableTilePreview {
-        const gaps = buildTileGaps(
+        var gaps = buildTileGaps(
             rect,
             this._innerGaps,
             this._outerGaps,
             this._containerRect,
         ).gaps;
-        const editableTile = new EditableTilePreview({
+        var editableTile = new EditableTilePreview({
             parent: this,
             tile,
             containerRect: this._containerRect,
@@ -196,7 +196,7 @@ export default class LayoutEditor extends St.Widget {
             else if (clicked_button === 3) this.deleteTile(editableTile);
         });
         editableTile.connect('motion-event', (_, event: Clutter.Event) => {
-            const [stageX, stageY] = getEventCoords(event);
+            var [stageX, stageY] = getEventCoords(event);
             this._hoverWidget.handleMouseMove(
                 editableTile,
                 stageX - this.x,
@@ -205,7 +205,7 @@ export default class LayoutEditor extends St.Widget {
             return Clutter.EVENT_PROPAGATE;
         });
         editableTile.connect('notify::hover', () => {
-            const [stageX, stageY] = Shell.Global.get().get_pointer();
+            var [stageX, stageY] = Shell.Global.get().get_pointer();
             this._hoverWidget.handleMouseMove(
                 editableTile,
                 stageX - this.x,
@@ -218,18 +218,18 @@ export default class LayoutEditor extends St.Widget {
     }
 
     private splitTile(editableTile: EditableTilePreview) {
-        const oldTile = editableTile.tile;
-        const index = this._layout.tiles.indexOf(oldTile);
+        var oldTile = editableTile.tile;
+        var index = this._layout.tiles.indexOf(oldTile);
         if (index < 0) return;
 
-        const [x, y, modifier] = global.get_pointer();
-        const splitX = (x - this.x) / this._containerRect.width;
-        const splitY = (y - this.y) / this._containerRect.height;
+        var [x, y, modifier] = global.get_pointer();
+        var splitX = (x - this.x) / this._containerRect.width;
+        var splitY = (y - this.y) / this._containerRect.height;
         // split horizontally when CTRL is NOT pressed, split vertically instead
-        const splitHorizontally =
+        var splitHorizontally =
             (modifier & Clutter.ModifierType.CONTROL_MASK) === 0;
 
-        const prevTile = new Tile({
+        var prevTile = new Tile({
             x: oldTile.x,
             y: oldTile.y,
             width: splitHorizontally ? splitX - oldTile.x : oldTile.width,
@@ -237,7 +237,7 @@ export default class LayoutEditor extends St.Widget {
             groups: [],
         });
 
-        const nextTile = new Tile({
+        var nextTile = new Tile({
             x: splitHorizontally ? splitX : oldTile.x,
             y: splitHorizontally ? oldTile.y : splitY,
             width: splitHorizontally
@@ -249,8 +249,8 @@ export default class LayoutEditor extends St.Widget {
             groups: [],
         });
 
-        const prevRect = TileUtils.apply_props(prevTile, this._containerRect);
-        const nextRect = TileUtils.apply_props(nextTile, this._containerRect);
+        var prevRect = TileUtils.apply_props(prevTile, this._containerRect);
+        var nextRect = TileUtils.apply_props(nextTile, this._containerRect);
         if (
             prevRect.height < EditableTilePreview.MIN_TILE_SIZE ||
             prevRect.width < EditableTilePreview.MIN_TILE_SIZE ||
@@ -262,10 +262,10 @@ export default class LayoutEditor extends St.Widget {
         this._layout.tiles[index] = prevTile;
         this._layout.tiles.push(nextTile);
 
-        const prevEditableTile = this._buildEditableTile(prevTile, prevRect);
-        const nextEditableTile = this._buildEditableTile(nextTile, nextRect);
+        var prevEditableTile = this._buildEditableTile(prevTile, prevRect);
+        var nextEditableTile = this._buildEditableTile(nextTile, nextRect);
 
-        const slider = this._buildSlider(
+        var slider = this._buildSlider(
             splitHorizontally,
             splitHorizontally
                 ? nextEditableTile.rect.x
@@ -320,10 +320,10 @@ export default class LayoutEditor extends St.Widget {
     }
 
     private deleteTile(editableTile: EditableTilePreview) {
-        for (const slider of editableTile.getAllSliders()) {
+        for (var slider of editableTile.getAllSliders()) {
             if (slider === null) continue;
 
-            const success = slider.deleteSlider(
+            var success = slider.deleteSlider(
                 editableTile,
                 this._innerGaps,
                 this._outerGaps,
@@ -347,7 +347,7 @@ export default class LayoutEditor extends St.Widget {
         groupId?: number,
     ): Slider {
         if (!groupId) {
-            const groups = this._sliders.map((slider) => slider.groupId).sort();
+            var groups = this._sliders.map((slider) => slider.groupId).sort();
             groupId = groups.length === 0 ? 1 : groups[groups.length - 1] + 1;
             for (let i = 1; i < groups.length; i++) {
                 if (groups[i - 1] + 1 < groups[i]) {
