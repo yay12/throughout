@@ -7,7 +7,7 @@ export function rect_to_string(rect: {
     return `{x: ${rect.x}, y: ${rect.y}, width: ${rect.width}, height: ${rect.height}}`;
 }
 
-export const logger =
+export let logger =
     (prefix: string) =>
     (...content: unknown[]): void =>
         console.log('[tilingshell]', `[${prefix}]`, ...content);
