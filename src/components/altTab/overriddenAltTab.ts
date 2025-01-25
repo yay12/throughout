@@ -7,9 +7,9 @@ import MultipleWindowsIcon from './MultipleWindowsIcon';
 import { buildMargin } from '@utils/ui';
 import Settings from '@settings/settings';
 
-const GAPS = 3;
+let GAPS = 3;
 
-const debug = logger('OverriddenAltTab');
+let debug = logger('OverriddenAltTab');
 
 export default class OverriddenAltTab {
     private static _instance: OverriddenAltTab | null = null;
@@ -32,7 +32,7 @@ export default class OverriddenAltTab {
         // if it is already enabled, do not enable again
         if (this._enabled) return;
 
-        const owm = this.get();
+        let owm = this.get();
 
         OverriddenAltTab._old_show = AltTab.WindowSwitcherPopup.prototype.show;
         // @ts-expect-error "This is expected"
@@ -64,29 +64,29 @@ export default class OverriddenAltTab {
         this._switcherList._squareItems = false;
 
         // Call original show function
-        const oldFunction = OverriddenAltTab._old_show?.bind(this);
-        const res = !oldFunction || oldFunction(backward, binding, mask);
+        let oldFunction = OverriddenAltTab._old_show?.bind(this);
+        let res = !oldFunction || oldFunction(backward, binding, mask);
 
-        const tiledWindows: Meta.Window[] = (
+        let tiledWindows: Meta.Window[] = (
             this._getWindowList() as Meta.Window[]
         ).filter((win) => (win as ExtendedWindow).assignedTile);
 
         if (tiledWindows.length <= 1) return res;
 
-        const tiles = tiledWindows
+        let tiles = tiledWindows
             .map((win) => (win as ExtendedWindow).assignedTile)
             .filter((tile) => tile !== undefined);
 
-        const inner_gaps = Settings.get_inner_gaps();
-        const height = this._items[0].height;
-        const width = Math.floor((height * 16) / 9);
-        const gaps =
+        let inner_gaps = Settings.get_inner_gaps();
+        let height = this._items[0].height;
+        let width = Math.floor((height * 16) / 9);
+        let gaps =
             GAPS *
             St.ThemeContext.get_for_stage(global.stage as Clutter.Stage)
                 .scale_factor;
 
         // Create new group entry
-        const groupWindowsIcon = new MultipleWindowsIcon({
+        let groupWindowsIcon = new MultipleWindowsIcon({
             tiles,
             width,
             height,
