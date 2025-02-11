@@ -6,7 +6,7 @@ import SignalHandling from '@utils/signalHandling';
 import { registerGObjectClass } from '@utils/gjs';
 import { logger } from '@utils/logger';
 
-const debug = logger('KeyBindings');
+let debug = logger('KeyBindings');
 
 export enum KeyBindingsDirection {
     NODIRECTION = 1,
@@ -238,7 +238,7 @@ export default class KeyBindings extends GObject.Object {
 
     private _overrideNatives(extensionSettings: Gio.Settings) {
         // Disable native keybindings for Super + Left/Right
-        const mutterKeybindings = new Gio.Settings({
+        let mutterKeybindings = new Gio.Settings({
             schema_id: 'org.gnome.mutter.keybindings',
         });
         this._overrideKeyBinding(
@@ -261,7 +261,7 @@ export default class KeyBindings extends GObject.Object {
         );
 
         // Disable native keybindings for Super + Up/Down
-        const desktopWm = new Gio.Settings({
+        let desktopWm = new Gio.Settings({
             schema_id: 'org.gnome.desktop.wm.keybindings',
         });
         this._overrideKeyBinding(
@@ -291,7 +291,7 @@ export default class KeyBindings extends GObject.Object {
         nativeSettings: Gio.Settings,
         nativeKeyName: string,
     ) {
-        const done = SettingsOverride.get().override(
+        let done = SettingsOverride.get().override(
             nativeSettings,
             nativeKeyName,
             new GLib.Variant('as', []),
@@ -334,7 +334,7 @@ export default class KeyBindings extends GObject.Object {
 
     private _restoreNatives() {
         // Disable native keybindings for Super + Left/Right
-        const mutterKeybindings = new Gio.Settings({
+        let mutterKeybindings = new Gio.Settings({
             schema_id: 'org.gnome.mutter.keybindings',
         });
         SettingsOverride.get().restoreKey(
@@ -347,7 +347,7 @@ export default class KeyBindings extends GObject.Object {
         );
 
         // Disable native keybindings for Super + Up/Down
-        const desktopWm = new Gio.Settings({
+        let desktopWm = new Gio.Settings({
             schema_id: 'org.gnome.desktop.wm.keybindings',
         });
         SettingsOverride.get().restoreKey(desktopWm, 'maximize');
