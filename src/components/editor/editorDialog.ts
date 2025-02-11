@@ -38,8 +38,8 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
         });
 
         if (params.enableScaling) {
-            let monitor = Main.layoutManager.findMonitorForActor(this);
-            let scalingFactor = getMonitorScalingFactor(
+            const monitor = Main.layoutManager.findMonitorForActor(this);
+            const scalingFactor = getMonitorScalingFactor(
                 monitor?.index || Main.layoutManager.primaryIndex,
             );
             enableScalingFactorSupport(this, scalingFactor);
@@ -86,7 +86,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
     }
 
     private _makeLegendDialog(params: { onClose: () => void; path: string }) {
-        let suggestion1 = new St.BoxLayout();
+        const suggestion1 = new St.BoxLayout();
         // LEFT-CLICK to split a tile
         suggestion1.add_child(
             new St.Label({
@@ -108,7 +108,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             }),
         );
 
-        let suggestion2 = new St.BoxLayout();
+        const suggestion2 = new St.BoxLayout();
         // LEFT-CLICK + CTRL to split a tile vertically
         suggestion2.add_child(
             new St.Label({
@@ -149,7 +149,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             }),
         );
 
-        let suggestion3 = new St.BoxLayout();
+        const suggestion3 = new St.BoxLayout();
         // RIGHT-CLICK to delete a tile
         suggestion3.add_child(
             new St.Label({
@@ -171,7 +171,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             }),
         );
 
-        let suggestion4 = new St.BoxLayout({
+        const suggestion4 = new St.BoxLayout({
             xExpand: true,
             margin_top: 16,
         });
@@ -197,7 +197,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             }),
         );
 
-        let legend = new St.BoxLayout({
+        const legend = new St.BoxLayout({
             styleClass: 'legend',
         });
         setWidgetOrientation(legend, true);
@@ -234,17 +234,17 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
         onClose: () => void;
         path: string;
     }) {
-        let gaps = Settings.get_inner_gaps(1).top > 0 ? this._gapsSize : 0;
+        const gaps = Settings.get_inner_gaps(1).top > 0 ? this._gapsSize : 0;
         this._layoutsBoxLayout.destroy_all_children();
 
         params.layouts.forEach((lay, btnInd) => {
-            let box = new St.BoxLayout({
+            const box = new St.BoxLayout({
                 xAlign: Clutter.ActorAlign.CENTER,
                 styleClass: 'layout-button-container',
             });
             setWidgetOrientation(box, true);
             this._layoutsBoxLayout.add_child(box);
-            let btn = new LayoutButton(
+            const btn = new LayoutButton(
                 box,
                 lay,
                 gaps,
@@ -252,7 +252,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
                 this._layoutWidth,
             );
             if (params.layouts.length > 1) {
-                let deleteBtn = new St.Button({
+                const deleteBtn = new St.Button({
                     xExpand: false,
                     xAlign: Clutter.ActorAlign.CENTER,
                     styleClass:
@@ -283,13 +283,13 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             return btn;
         });
 
-        let box = new St.BoxLayout({
+        const box = new St.BoxLayout({
             xAlign: Clutter.ActorAlign.CENTER,
             styleClass: 'layout-button-container',
         });
         setWidgetOrientation(box, true);
         this._layoutsBoxLayout.add_child(box);
-        let newLayoutBtn = new LayoutButton(
+        const newLayoutBtn = new LayoutButton(
             box,
             new Layout(
                 [new Tile({ x: 0, y: 0, width: 1, height: 1, groups: [] })],
@@ -299,7 +299,7 @@ export default class EditorDialog extends ModalDialog.ModalDialog {
             this._layoutHeight,
             this._layoutWidth,
         );
-        let icon = new St.Icon({
+        const icon = new St.Icon({
             gicon: Gio.icon_new_for_string(
                 `${params.path}/icons/add-symbolic.svg`,
             ),
