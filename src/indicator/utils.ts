@@ -1,11 +1,11 @@
 import { St, Clutter, Gio } from '@gi.ext';
 
-export let createButton = (
+export const createButton = (
     iconName: string,
     text: string,
     path?: string,
 ): St.Button => {
-    let btn = createIconButton(iconName, path, 8);
+    const btn = createIconButton(iconName, path, 8);
     btn.set_style('padding-left: 5px !important;'); // bring back the right padding
     btn.child.add_child(
         new St.Label({
@@ -18,12 +18,12 @@ export let createButton = (
     return btn;
 };
 
-export let createIconButton = (
+export const createIconButton = (
     iconName: string,
     path?: string,
     spacing = 0,
 ): St.Button => {
-    let btn = new St.Button({
+    const btn = new St.Button({
         styleClass: 'message-list-clear-button button',
         canFocus: true,
         xExpand: true,
@@ -38,7 +38,7 @@ export let createIconButton = (
         }),
     });
 
-    let icon = new St.Icon({
+    const icon = new St.Icon({
         iconSize: 16,
         yAlign: Clutter.ActorAlign.CENTER,
         style: 'padding: 6px',
