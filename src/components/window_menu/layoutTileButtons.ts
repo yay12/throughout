@@ -24,7 +24,7 @@ export default class LayoutTileButtons extends LayoutWidget<SnapAssistTileButton
             styleClass: 'window-menu-layout',
         });
 
-        const [, scalingFactor] = getScalingFactorOf(this);
+        let [, scalingFactor] = getScalingFactorOf(this);
 
         this.relayout({
             containerRect: buildRectangle({
@@ -51,13 +51,13 @@ export default class LayoutTileButtons extends LayoutWidget<SnapAssistTileButton
     }
 
     private _fixFloatingPointErrors() {
-        const xMap: Map<number, number> = new Map();
-        const yMap: Map<number, number> = new Map();
+        let xMap: Map<number, number> = new Map();
+        let yMap: Map<number, number> = new Map();
         this._previews.forEach((prev) => {
-            const tile = prev.tile;
-            const newX = xMap.get(tile.x);
+            let tile = prev.tile;
+            let newX = xMap.get(tile.x);
             if (!newX) xMap.set(tile.x, prev.rect.x);
-            const newY = yMap.get(tile.y);
+            let newY = yMap.get(tile.y);
             if (!newY) yMap.set(tile.y, prev.rect.y);
 
             if (newX || newY) {
