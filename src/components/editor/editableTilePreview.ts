@@ -75,7 +75,7 @@ export default class EditableTilePreview extends TilePreview {
 
     public addSlider(slider: Slider, side: St.Side) {
         // if there were another slider on that side, disconnect the signal
-        let sig = this._signals[side];
+        const sig = this._signals[side];
         if (sig) this._sliders[side]?.disconnect(sig);
 
         // add this slider
@@ -93,7 +93,7 @@ export default class EditableTilePreview extends TilePreview {
         if (this._sliders[side] === null) return;
 
         // disconnect signals
-        let sig = this._signals[side];
+        const sig = this._signals[side];
         if (sig) this._sliders[side]?.disconnect(sig);
 
         // remove slider
@@ -119,7 +119,7 @@ export default class EditableTilePreview extends TilePreview {
         innerGaps?: Clutter.Margin;
         outerGaps?: Clutter.Margin;
     }) {
-        let oldSize = this._rect.copy();
+        const oldSize = this._rect.copy();
         this._tile.x = x;
         this._tile.y = y;
         this._tile.width = width;
@@ -140,7 +140,7 @@ export default class EditableTilePreview extends TilePreview {
         this._btn.set_size(this.width, this.height);
         this._updateLabelText();
 
-        let newSize = this._rect.copy();
+        const newSize = this._rect.copy();
         this.emit('size-changed', oldSize, newSize);
     }
 
@@ -178,13 +178,13 @@ export default class EditableTilePreview extends TilePreview {
     }
 
     private _onSliderMove(side: St.Side) {
-        let slider = this._sliders[side];
+        const slider = this._sliders[side];
         if (slider === null) return;
 
-        let posHoriz =
+        const posHoriz =
             (slider.x + slider.width / 2 - this._containerRect.x) /
             this._containerRect.width;
-        let posVert =
+        const posVert =
             (slider.y + slider.height / 2 - this._containerRect.y) /
             this._containerRect.height;
         switch (side) {
