@@ -12,15 +12,15 @@ import {
 } from '@gi.ext';
 import { logger } from '@utils/logger';
 
-var WINDOW_OVERLAY_FADE_TIME = 200;
+const WINDOW_OVERLAY_FADE_TIME = 200;
 
-var WINDOW_SCALE_TIME = 200;
-var WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
+const WINDOW_SCALE_TIME = 200;
+const WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
 
-var ICON_SIZE = 36;
-var ICON_OVERLAP = 0.7;
+const ICON_SIZE = 36;
+const ICON_OVERLAP = 0.7;
 
-var debug = logger('SuggestedWindowPreview');
+const debug = logger('SuggestedWindowPreview');
 
 /*
 This class is heavily based on Gnome Shell's WindowPreview class
@@ -54,7 +54,7 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
             layoutManager: new Clutter.BinLayout(),
             xAlign: Clutter.ActorAlign.CENTER,
         });
-        var windowContainer = new Clutter.Actor({
+        const windowContainer = new Clutter.Actor({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
         this.window_container = windowContainer;
@@ -79,8 +79,8 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
 
         this._overlayShown = false;
 
-        var tracker = Shell.WindowTracker.get_default();
-        var app = tracker.get_window_app(this._metaWindow);
+        const tracker = Shell.WindowTracker.get_default();
+        const app = tracker.get_window_app(this._metaWindow);
         this._icon = app.create_icon_texture(ICON_SIZE) as St.Widget;
         this._icon.add_style_class_name('window-icon');
         this._icon.add_style_class_name('icon-dropshadow');
@@ -158,8 +158,8 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
     private _getCaption() {
         if (this._metaWindow.title) return this._metaWindow.title;
 
-        var tracker = Shell.WindowTracker.get_default();
-        var app = tracker.get_window_app(this._metaWindow);
+        const tracker = Shell.WindowTracker.get_default();
+        const app = tracker.get_window_app(this._metaWindow);
         return app.get_name();
     }
 
@@ -170,7 +170,7 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
-        var ongoingTransition = this._title.get_transition('opacity');
+        const ongoingTransition = this._title.get_transition('opacity');
         if (
             animate &&
             ongoingTransition &&
@@ -188,13 +188,13 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
             });
         });
 
-        var [width, height] = this.windowContainer.get_size();
-        var { scaleFactor } = St.ThemeContext.get_for_stage(
+        const [width, height] = this.windowContainer.get_size();
+        const { scaleFactor } = St.ThemeContext.get_for_stage(
             global.stage as Clutter.Stage,
         );
-        var activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
-        var origSize = Math.max(width, height);
-        var scale = (origSize + activeExtraSize) / origSize;
+        const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
+        const origSize = Math.max(width, height);
+        const scale = (origSize + activeExtraSize) / origSize;
 
         this._previewContainer.ease({
             scaleX: scale,
@@ -211,7 +211,7 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
-        var ongoingTransition = this._title.get_transition('opacity');
+        const ongoingTransition = this._title.get_transition('opacity');
         if (
             animate &&
             ongoingTransition &&
@@ -269,8 +269,8 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
     }
 
     _updateAttachedDialogs() {
-        var iter = (win) => {
-            var actor = win.get_compositor_private();
+        const iter = (win) => {
+            const actor = win.get_compositor_private();
 
             if (!actor) return false;
             if (!win.is_attached_dialog()) return false;
@@ -292,8 +292,8 @@ export default class SuggestedWindowPreview extends Shell.WindowPreview {
     setStackAbove(actor) {
         this._stackAbove = actor;
 
-        var parent = this.get_parent();
-        var actualAbove = this._getActualStackAbove();
+        const parent = this.get_parent();
+        const actualAbove = this._getActualStackAbove();
         if (actualAbove == null) parent.set_child_below_sibling(this, null);
         else parent.set_child_above_sibling(this, actualAbove);
     }
