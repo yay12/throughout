@@ -47,7 +47,7 @@ export default class TouchPointer {
     }
 
     public get_pointer(window: Meta.Window): [number, number, number] {
-        let currPos = window.get_frame_rect();
+        const currPos = window.get_frame_rect();
         this._x += currPos.x - this._windowPos.x;
         this._y += currPos.y - this._windowPos.y;
         this._windowPos.x = currPos.x;
