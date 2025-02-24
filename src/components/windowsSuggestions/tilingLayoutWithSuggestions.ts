@@ -13,10 +13,10 @@ import SignalHandling from '@utils/signalHandling';
 import SuggestionsTilePreview from '@components/windowsSuggestions/suggestionsTilePreview';
 import TilingShellWindowManager from '@components/windowManager/tilingShellWindowManager';
 
-const debug = logger('TilingLayoutWithSuggestions');
+var debug = logger('TilingLayoutWithSuggestions');
 
-const ANIMATION_SPEED = 200;
-const MASONRY_LAYOUT_ROW_HEIGHT = 0.31;
+var ANIMATION_SPEED = 200;
+var MASONRY_LAYOUT_ROW_HEIGHT = 0.31;
 
 @registerGObjectClass
 export default class TilingLayoutWithSuggestions extends LayoutWidget<SuggestionsTilePreview> {
@@ -89,7 +89,7 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
             global.stage,
             'key-press-event',
             (_: Clutter.Actor, event: Clutter.Event) => {
-                const symbol = event.get_key_symbol();
+                var symbol = event.get_key_symbol();
                 if (symbol === Clutter.KEY_Escape) this.close();
 
                 return Clutter.EVENT_PROPAGATE;
@@ -102,8 +102,8 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
         windowDesiredRect: Mtk.Rectangle,
         window: Meta.Window,
     ) {
-        const vacantPreviews = this._previews.map((prev) => {
-            const previewRect = buildRectangle({
+        var vacantPreviews = this._previews.map((prev) => {
+            var previewRect = buildRectangle({
                 x: prev.innerX,
                 y: prev.innerY,
                 width: prev.innerWidth,
@@ -115,7 +115,7 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
                 ),
             );
         });
-        const newPreviews = [];
+        var newPreviews = [];
         for (let index = 0; index < this._previews.length; index++) {
             if (vacantPreviews[index]) {
                 this._previews[index].open();
@@ -143,9 +143,9 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
             if (prev.x < preview.x) preview = prev;
         });
 
-        const clones = nontiledWindows.map((nonTiledWin) => {
-            const winClone = new SuggestedWindowPreview(nonTiledWin);
-            const winActor =
+        var clones = nontiledWindows.map((nonTiledWin) => {
+            var winClone = new SuggestedWindowPreview(nonTiledWin);
+            var winActor =
                 nonTiledWin.get_compositor_private() as Meta.WindowActor;
 
             // fade out and unscale by 10% the window actor
@@ -201,15 +201,15 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
                     nonTiledWin.unmake_fullscreen();
                 if (nonTiledWin.minimized) nonTiledWin.unminimize();
 
-                const winRect = nonTiledWin.get_frame_rect();
+                var winRect = nonTiledWin.get_frame_rect();
                 (nonTiledWin as ExtendedWindow).originalSize = winRect.copy();
 
                 // create a static clone and hide the live clone
                 // then we can change the actual window size
                 // without showing that to the user
-                const cl = winClone.get_window_clone() ?? winClone;
-                const [x, y] = cl.get_transformed_position();
-                const allocation = cl.get_allocation_box();
+                var cl = winClone.get_window_clone() ?? winClone;
+                var [x, y] = cl.get_transformed_position();
+                var allocation = cl.get_allocation_box();
                 TilingShellWindowManager.easeMoveWindow({
                     window: nonTiledWin,
                     from: buildRectangle({
@@ -235,7 +235,7 @@ export default class TilingLayoutWithSuggestions extends LayoutWidget<Suggestion
                 winClone.opacity = 0;
                 // begin hiding the preview. Destroy it when it is hidden
                 // and recursively show popup on the next vacant tile
-                const removed = this._previews.splice(
+                var removed = this._previews.splice(
                     this._previews.indexOf(preview),
                     1,
                 );
