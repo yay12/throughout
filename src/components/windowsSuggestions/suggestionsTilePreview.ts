@@ -5,8 +5,8 @@ import { buildBlurEffect, setWidgetOrientation } from '@utils/ui';
 import Tile from '@components/layout/Tile';
 import MasonryLayoutManager from './masonryLayoutManager';
 
-let MASONRY_LAYOUT_SPACING = 32;
-let SCROLLBARS_SHOW_ANIM_DURATION = 100; // ms
+const MASONRY_LAYOUT_SPACING = 32;
+const SCROLLBARS_SHOW_ANIM_DURATION = 100; // ms
 
 @registerGObjectClass
 export default class SuggestionsTilePreview extends TilePreview {
@@ -45,7 +45,7 @@ export default class SuggestionsTilePreview extends TilePreview {
         );*/
 
         this._recolor();
-        let styleChangedSignalID = St.ThemeContext.get_for_stage(
+        const styleChangedSignalID = St.ThemeContext.get_for_stage(
             global.get_stage(),
         ).connect('changed', () => {
             this._recolor();
@@ -111,7 +111,7 @@ export default class SuggestionsTilePreview extends TilePreview {
     _init() {
         super._init();
 
-        let effect = buildBlurEffect(48);
+        const effect = buildBlurEffect(48);
         effect.set_name('blur');
         effect.set_enabled(this._blur);
         this.add_effect(effect);
@@ -122,11 +122,11 @@ export default class SuggestionsTilePreview extends TilePreview {
     _recolor() {
         this.set_style(null);
 
-        let backgroundColor = this.get_theme_node()
+        const backgroundColor = this.get_theme_node()
             .get_background_color()
             .copy();
         // since an alpha value lower than 160 is not so much visible, enforce a minimum value of 160
-        let newAlpha = Math.max(
+        const newAlpha = Math.max(
             Math.min(backgroundColor.alpha + 35, 255),
             160,
         );
@@ -179,7 +179,7 @@ export default class SuggestionsTilePreview extends TilePreview {
         this._container.destroy_all_children();
         windows.forEach((actor) => this._container.add_child(actor));
         this._container.queue_relayout();
-        let placements = MasonryLayoutManager.computePlacements(
+        const placements = MasonryLayoutManager.computePlacements(
             windows,
             this.innerWidth - 2 * MASONRY_LAYOUT_SPACING,
             this.innerHeight,
@@ -195,7 +195,7 @@ export default class SuggestionsTilePreview extends TilePreview {
         );
         // add each row
         placements.forEach((row) => {
-            let rowBox = new St.BoxLayout({
+            const rowBox = new St.BoxLayout({
                 x_align: Clutter.ActorAlign.CENTER,
                 style: `spacing: ${MASONRY_LAYOUT_SPACING}px;`,
             });
