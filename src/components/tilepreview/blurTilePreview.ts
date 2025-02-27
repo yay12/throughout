@@ -11,7 +11,7 @@ export default class BlurTilePreview extends TilePreview {
         // changes in GNOME 46+
         // The sigma in Shell.BlurEffect should be replaced by radius. Since the sigma value
         // is radius / 2.0, the radius value will be sigma * 2.0.
-        let sigma = 36;
+        const sigma = 36;
         this.add_effect(
             new Shell.BlurEffect({
                 // @ts-ignore
