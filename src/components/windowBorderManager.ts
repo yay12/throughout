@@ -14,11 +14,11 @@ import {
 
 Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
-const DEFAULT_BORDER_RADIUS = 11;
-const SMART_BORDER_RADIUS_DELAY = 460;
-const SMART_BORDER_RADIUS_FIRST_FRAME_DELAY = 240;
+var DEFAULT_BORDER_RADIUS = 11;
+var SMART_BORDER_RADIUS_DELAY = 460;
+var SMART_BORDER_RADIUS_FIRST_FRAME_DELAY = 240;
 
-const debug = logger('WindowBorderManager');
+var debug = logger('WindowBorderManager');
 
 interface WindowWithCachedRadius extends Meta.Window {
     __ts_cached_radius: [number, number, number, number] | undefined;
@@ -48,7 +48,7 @@ class WindowBorder extends St.Bin {
         this._windowMonitor = win.get_monitor();
         this._enableScaling = enableScaling;
         this._delayedSmartBorderRadius = false;
-        const smartRadius = Settings.ENABLE_SMART_WINDOW_BORDER_RADIUS;
+        var smartRadius = Settings.ENABLE_SMART_WINDOW_BORDER_RADIUS;
         this._borderRadiusValue = [
             DEFAULT_BORDER_RADIUS,
             DEFAULT_BORDER_RADIUS,
@@ -78,7 +78,7 @@ class WindowBorder extends St.Bin {
         this._signals.disconnect();
         this._window = win;
         this.close();
-        const winActor =
+        var winActor =
             this._window.get_compositor_private() as Meta.WindowActor;
 
         // scale and translate like the window actor
@@ -97,7 +97,7 @@ class WindowBorder extends St.Bin {
             ),
         );
 
-        const winRect = this._window.get_frame_rect();
+        var winRect = this._window.get_frame_rect();
         this.set_position(
             winRect.x - this._borderWidth,
             winRect.y - this._borderWidth,
@@ -108,7 +108,7 @@ class WindowBorder extends St.Bin {
         );
 
         if (Settings.ENABLE_SMART_WINDOW_BORDER_RADIUS) {
-            const cached_radius = (this._window as WindowWithCachedRadius)
+            var cached_radius = (this._window as WindowWithCachedRadius)
                 .__ts_cached_radius;
             if (cached_radius) {
                 this._borderRadiusValue[St.Corner.TOPLEFT] =
@@ -123,7 +123,7 @@ class WindowBorder extends St.Bin {
         }
         this.updateStyle();
 
-        const isMaximized =
+        var isMaximized =
             this._window.maximizedVertically &&
             this._window.maximizedHorizontally;
         if (
@@ -158,7 +158,7 @@ class WindowBorder extends St.Bin {
                 this._runComputeBorderRadiusTimeout(winActor);
             }
 
-            const rect = this._window.get_frame_rect();
+            var rect = this._window.get_frame_rect();
             this.set_position(
                 rect.x - this._borderWidth,
                 rect.y - this._borderWidth,
@@ -191,7 +191,7 @@ class WindowBorder extends St.Bin {
                 this._runComputeBorderRadiusTimeout(winActor);
             }
 
-            const rect = this._window.get_frame_rect();
+            var rect = this._window.get_frame_rect();
             this.set_size(
                 rect.width + 2 * this._borderWidth,
                 rect.height + 2 * this._borderWidth,
@@ -205,7 +205,7 @@ class WindowBorder extends St.Bin {
         });
 
         if (Settings.ENABLE_SMART_WINDOW_BORDER_RADIUS) {
-            const firstFrameId = winActor.connect_after('first-frame', () => {
+            var firstFrameId = winActor.connect_after('first-frame', () => {
                 if (
                     this._window.maximizedHorizontally ||
                     this._window.maximizedVertically ||
@@ -234,10 +234,10 @@ class WindowBorder extends St.Bin {
 
     private async _computeBorderRadius(winActor: Meta.WindowActor) {
         // we are only interested into analyze the leftmost pixels (i.e. the whole left border)
-        const width = 3;
-        const height = winActor.metaWindow.get_frame_rect().height;
+        var width = 3;
+        var height = winActor.metaWindow.get_frame_rect().height;
         if (height <= 0) return;
-        const content = winActor.paint_to_content(
+        var content = winActor.paint_to_content(
             buildRectangle({
                 x: winActor.metaWindow.get_frame_rect().x,
                 y: winActor.metaWindow.get_frame_rect().y,
@@ -248,7 +248,7 @@ class WindowBorder extends St.Bin {
         if (!content) return;
 
         /* for debugging purposes
-        const elem = new St.Widget({
+        var elem = new St.Widget({
             x: 100,
             y: 100,
             width,
@@ -262,11 +262,11 @@ class WindowBorder extends St.Bin {
             ?.destroy();
         global.windowGroup.add_child(elem);*/
         // @ts-expect-error "content has get_texture() method"
-        const texture = content.get_texture();
-        const stream = Gio.MemoryOutputStream.new_resizable();
-        const x = 0;
-        const y = 0;
-        const pixbuf = await Shell.Screenshot.composite_to_stream(
+        var texture = content.get_texture();
+        var stream = Gio.MemoryOutputStream.new_resizable();
+        var x = 0;
+        var y = 0;
+        var pixbuf = await Shell.Screenshot.composite_to_stream(
             texture,
             x,
             y,
@@ -280,9 +280,9 @@ class WindowBorder extends St.Bin {
             stream,
         );
         // @ts-expect-error "pixbuf has get_pixels() method"
-        const pixels = pixbuf.get_pixels();
+        var pixels = pixbuf.get_pixels();
 
-        const alphaThreshold = 240; // 255 would be the best value, however, some windows may still have a bit of transparency
+        var alphaThreshold = 240; // 255 would be the best value, however, some windows may still have a bit of transparency
         // iterate pixels from top to bottom
         for (let i = 0; i < height; i++) {
             if (pixels[i * width * 4 + 3] > alphaThreshold) {
@@ -304,7 +304,7 @@ class WindowBorder extends St.Bin {
         }
         stream.close(null);
 
-        const cached_radius: [number, number, number, number] = [
+        var cached_radius: [number, number, number, number] = [
             DEFAULT_BORDER_RADIUS,
             DEFAULT_BORDER_RADIUS,
             0,
@@ -324,27 +324,27 @@ class WindowBorder extends St.Bin {
 
     public updateStyle(): void {
         // handle scale factor of the monitor
-        const monitorScalingFactor = this._enableScaling
+        var monitorScalingFactor = this._enableScaling
             ? getMonitorScalingFactor(this._window.get_monitor())
             : undefined;
         // CAUTION: this overrides the CSS style
         enableScalingFactorSupport(this, monitorScalingFactor);
 
-        const [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
+        var [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
         // the value is already scaled if the border is on primary monitor
-        const borderWidth =
+        var borderWidth =
             (alreadyScaled ? 1 : scalingFactor) *
             (Settings.WINDOW_BORDER_WIDTH /
                 (alreadyScaled ? scalingFactor : 1));
-        const radius = this._borderRadiusValue.map((val) => {
-            const valWithBorder = val === 0 ? val : val + borderWidth;
+        var radius = this._borderRadiusValue.map((val) => {
+            var valWithBorder = val === 0 ? val : val + borderWidth;
             return (
                 (alreadyScaled ? 1 : scalingFactor) *
                 (valWithBorder / (alreadyScaled ? scalingFactor : 1))
             );
         });
 
-        const scalingFactorSupportString = monitorScalingFactor
+        var scalingFactorSupportString = monitorScalingFactor
             ? `${getScalingFactorSupportString(monitorScalingFactor)};`
             : '';
         this.set_style(
@@ -352,7 +352,7 @@ class WindowBorder extends St.Bin {
         );
 
         if (this._borderWidth !== borderWidth) {
-            const diff = this._borderWidth - borderWidth;
+            var diff = this._borderWidth - borderWidth;
             this._borderWidth = borderWidth;
             this.set_size(
                 this.get_width() - 2 * diff,
@@ -435,7 +435,7 @@ export class WindowBorderManager {
 
     private _onWindowFocused(): void {
         // connect signals on the window and create the border
-        const metaWindow = global.display.focus_window;
+        var metaWindow = global.display.focus_window;
 
         if (
             !metaWindow ||
