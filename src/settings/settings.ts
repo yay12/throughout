@@ -446,7 +446,7 @@ export default class Settings {
         right: number;
     } {
         // get the gaps settings and scale by scale factor
-        var value = this.INNER_GAPS * scaleFactor;
+        const value = this.INNER_GAPS * scaleFactor;
         return {
             top: value,
             bottom: value,
@@ -462,7 +462,7 @@ export default class Settings {
         right: number;
     } {
         // get the gaps settings and scale by scale factor
-        var value = this.OUTER_GAPS * scaleFactor;
+        const value = this.OUTER_GAPS * scaleFactor;
         return {
             top: value,
             bottom: value,
@@ -473,7 +473,7 @@ export default class Settings {
 
     static get_layouts_json(): Layout[] {
         try {
-            var layouts = JSON.parse(
+            const layouts = JSON.parse(
                 this._settings?.get_string(this.KEY_SETTING_LAYOUTS_JSON) ||
                     '[]',
             ) as Layout[];
@@ -490,22 +490,22 @@ export default class Settings {
     }
 
     static get_selected_layouts(): string[][] {
-        var variant = this._settings?.get_value(
+        const variant = this._settings?.get_value(
             Settings.KEY_SETTING_SELECTED_LAYOUTS,
         );
         if (!variant) return [];
 
-        var result: string[][] = [];
+        const result: string[][] = [];
         // for each monitor
         for (let i = 0; i < variant.n_children(); i++) {
-            var monitor_variant = variant.get_child_value(i);
+            const monitor_variant = variant.get_child_value(i);
             if (!monitor_variant) continue;
 
-            var n_workspaces = monitor_variant.n_children();
-            var monitor_result: string[] = [];
+            const n_workspaces = monitor_variant.n_children();
+            const monitor_result: string[] = [];
             // for each workspace
             for (let j = 0; j < n_workspaces; j++) {
-                var layout_variant = monitor_variant.get_child_value(j);
+                const layout_variant = monitor_variant.get_child_value(j);
                 if (!layout_variant) continue;
 
                 monitor_result.push(layout_variant.get_string()[0]);
@@ -636,10 +636,10 @@ export default class Settings {
             this._settings?.reset(Settings.KEY_SETTING_SELECTED_LAYOUTS);
             return;
         }
-        var variants = ids.map((monitor_ids) =>
+        const variants = ids.map((monitor_ids) =>
             GLib.Variant.new_strv(monitor_ids),
         );
-        var result = GLib.Variant.new_array(null, variants);
+        const result = GLib.Variant.new_array(null, variants);
         this._settings?.set_value(
             Settings.KEY_SETTING_SELECTED_LAYOUTS,
             // @ts-expect-error "'result' is of a correct variant type"
