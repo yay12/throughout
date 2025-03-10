@@ -20,9 +20,9 @@ import { buildMarginOf } from '@utils/ui';
 import LayoutIcon from './layoutIcon';
 import { _ } from '../../translations';
 
-var LAYOUT_ICON_WIDTH = 46;
-var LAYOUT_ICON_HEIGHT = 32;
-var INNER_GAPS = 2;
+const LAYOUT_ICON_WIDTH = 46;
+const LAYOUT_ICON_HEIGHT = 32;
+const INNER_GAPS = 2;
 
 export function buildMenuWithLayoutIcon(
     title: string,
@@ -38,7 +38,7 @@ export function buildMenuWithLayoutIcon(
             xExpand: true,
         }),
     );
-    var layoutIcon = new LayoutIcon(
+    const layoutIcon = new LayoutIcon(
         popupMenu,
         importantTiles,
         tiles,
@@ -75,7 +75,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
         // if it is already enabled, do not enable again
         if (this._enabled) return;
 
-        var owm = this.get();
+        const owm = this.get();
 
         OverriddenWindowMenu._old_buildMenu =
             windowMenu.WindowMenu.prototype._buildMenu;
@@ -102,16 +102,16 @@ export default class OverriddenWindowMenu extends GObject.Object {
 
     // the function will be treated as a method of class WindowMenu
     private newBuildMenu(window: Meta.Window) {
-        var oldFunction = OverriddenWindowMenu._old_buildMenu?.bind(this);
+        const oldFunction = OverriddenWindowMenu._old_buildMenu?.bind(this);
         if (oldFunction) oldFunction(window);
 
-        var layouts = GlobalState.get().layouts;
+        const layouts = GlobalState.get().layouts;
         if (layouts.length === 0) return;
 
-        var workArea = Main.layoutManager.getWorkAreaForMonitor(
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(
             window.get_monitor(),
         );
-        var tiledWindows: ExtendedWindow[] = getWindows()
+        const tiledWindows: ExtendedWindow[] = getWindows()
             .map((otherWindow) => {
                 return otherWindow &&
                     !otherWindow.minimized &&
@@ -121,20 +121,20 @@ export default class OverriddenWindowMenu extends GObject.Object {
             })
             .filter((w) => w !== undefined);
 
-        var tiles = GlobalState.get().getSelectedLayoutOfMonitor(
+        const tiles = GlobalState.get().getSelectedLayoutOfMonitor(
             window.get_monitor(),
             global.workspaceManager.get_active_workspace_index(),
         ).tiles;
-        var vacantTiles = tiles.filter((t) => {
-            var tileRect = TileUtils.apply_props(t, workArea);
+        const vacantTiles = tiles.filter((t) => {
+            const tileRect = TileUtils.apply_props(t, workArea);
             return !tiledWindows.find((win) =>
                 tileRect.overlap(win.get_frame_rect()),
             );
         });
 
-        var enableScaling =
+        const enableScaling =
             window.get_monitor() === Main.layoutManager.primaryIndex;
-        var scalingFactor = getMonitorScalingFactor(window.get_monitor());
+        const scalingFactor = getMonitorScalingFactor(window.get_monitor());
 
         if (vacantTiles.length > 0) {
             vacantTiles.sort((a, b) => a.x - b.x);
@@ -146,7 +146,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
                     vacantTiles[bestTileIndex].width / 2,
             );
             for (let index = 1; index < vacantTiles.length; index++) {
-                var distance = Math.abs(
+                const distance = Math.abs(
                     0.5 - (vacantTiles[index].x + vacantTiles[index].width / 2),
                 );
                 if (bestDistance > distance) {
@@ -158,7 +158,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-            var vacantPopupMenu = new PopupMenu.PopupBaseMenuItem();
+            const vacantPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantPopupMenu);
             if (enableScaling)
@@ -181,7 +181,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
         }
 
         if (vacantTiles.length > 1) {
-            var vacantLeftPopupMenu = new PopupMenu.PopupBaseMenuItem();
+            const vacantLeftPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantLeftPopupMenu);
             if (enableScaling)
@@ -201,10 +201,10 @@ export default class OverriddenWindowMenu extends GObject.Object {
                 );
             });
 
-            var tilesFromRightToLeft = vacantTiles
+            const tilesFromRightToLeft = vacantTiles
                 .slice(0)
                 .sort((a, b) => (b.x === a.x ? a.y - b.y : b.x - a.x));
-            var vacantRightPopupMenu = new PopupMenu.PopupBaseMenuItem();
+            const vacantRightPopupMenu = new PopupMenu.PopupBaseMenuItem();
             // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
             this.addMenuItem(vacantRightPopupMenu);
             if (enableScaling)
@@ -228,10 +228,10 @@ export default class OverriddenWindowMenu extends GObject.Object {
         // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        var layoutsPopupMenu = new PopupMenu.PopupBaseMenuItem();
+        const layoutsPopupMenu = new PopupMenu.PopupBaseMenuItem();
         // @ts-expect-error "this is not an instance of OverriddenWindowMenu, but it is the WindowMenu itself"
         this.addMenuItem(layoutsPopupMenu);
-        var container = new St.BoxLayout({
+        const container = new St.BoxLayout({
             xAlign: Clutter.ActorAlign.START,
             yAlign: Clutter.ActorAlign.CENTER,
             xExpand: true,
@@ -240,10 +240,10 @@ export default class OverriddenWindowMenu extends GObject.Object {
         });
         setWidgetOrientation(container, true);
         layoutsPopupMenu.add_child(container);
-        var layoutsPerRow = 4;
-        var rows: St.BoxLayout[] = [];
+        const layoutsPerRow = 4;
+        const rows: St.BoxLayout[] = [];
         for (let index = 0; index < layouts.length; index += layoutsPerRow) {
-            var box = new St.BoxLayout({
+            const box = new St.BoxLayout({
                 xAlign: Clutter.ActorAlign.CENTER,
                 yAlign: Clutter.ActorAlign.CENTER,
                 xExpand: true,
@@ -256,11 +256,11 @@ export default class OverriddenWindowMenu extends GObject.Object {
         if (enableScaling)
             enableScalingFactorSupport(layoutsPopupMenu, scalingFactor);
 
-        var layoutHeight: number = 30;
-        var layoutWidth: number = 52; // 16:9 ratio. -> (16*layoutHeight) / 9 and then rounded to int
+        const layoutHeight: number = 30;
+        const layoutWidth: number = 52; // 16:9 ratio. -> (16*layoutHeight) / 9 and then rounded to int
         layouts.forEach((lay, ind) => {
-            var row = rows[Math.floor(ind / layoutsPerRow)];
-            var layoutWidget = new LayoutTileButtons(
+            const row = rows[Math.floor(ind / layoutsPerRow)];
+            const layoutWidget = new LayoutTileButtons(
                 row,
                 lay,
                 INNER_GAPS,
@@ -280,7 +280,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
             });
         });
 
-        /* var quarterTiles: [Tile, string][] = [
+        /* const quarterTiles: [Tile, string][] = [
             [
                 new Tile({ x: 0, y: 0, width: 0.5, height: 0.5, groups: [] }),
                 'Move to Top Left',
@@ -306,7 +306,7 @@ export default class OverriddenWindowMenu extends GObject.Object {
         ];
 
         quarterTiles.forEach(([tile, label]) => {
-            var pMenu = new PopupMenu.PopupBaseMenuItem();
+            const pMenu = new PopupMenu.PopupBaseMenuItem();
             this.addMenuItem(pMenu);
             buildMenuWithLayoutIcon(
                 label,
