@@ -18,7 +18,7 @@ export default class SignalHandling {
         key: string,
         fun: (..._args: never[]) => void,
     ) {
-        const signalId = obj.connect(key, fun);
+        let signalId = obj.connect(key, fun);
         this._signalsIds[key] = { id: signalId, obj };
     }
 
@@ -26,16 +26,16 @@ export default class SignalHandling {
     public disconnect(obj: ObjectWithSignals): boolean;
     public disconnect(obj?: ObjectWithSignals) {
         if (!obj) {
-            const toDelete: string[] = [];
+            let toDelete: string[] = [];
             Object.keys(this._signalsIds).forEach((key) => {
                 this._signalsIds[key].obj.disconnect(this._signalsIds[key].id);
                 toDelete.push(key);
             });
-            const result = toDelete.length > 0;
+            let result = toDelete.length > 0;
             toDelete.forEach((key) => delete this._signalsIds[key]);
             return result;
         } else {
-            const keyFound = Object.keys(this._signalsIds).find(
+            let keyFound = Object.keys(this._signalsIds).find(
                 (key) => this._signalsIds[key].obj === obj,
             );
             if (keyFound) {
