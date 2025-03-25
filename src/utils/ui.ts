@@ -2,9 +2,9 @@ import { St, Meta, Mtk, Clutter, Shell } from '@gi.ext';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Monitor } from 'resource:///org/gnome/shell/ui/layout.js';
 
-export let getMonitors = (): Monitor[] => Main.layoutManager.monitors;
+export const getMonitors = (): Monitor[] => Main.layoutManager.monitors;
 
-export let isPointInsideRect = (
+export const isPointInsideRect = (
     point: { x: number; y: number },
     rect: Mtk.Rectangle,
 ): boolean => {
@@ -16,11 +16,11 @@ export let isPointInsideRect = (
     );
 };
 
-export let clampPointInsideRect = (
+export const clampPointInsideRect = (
     point: { x: number; y: number },
     rect: Mtk.Rectangle,
 ): { x: number; y: number } => {
-    let clamp = (n: number, min: number, max: number) =>
+    const clamp = (n: number, min: number, max: number) =>
         Math.min(Math.max(n, min), max);
     return {
         x: clamp(point.x, rect.x, rect.x + rect.width),
@@ -28,7 +28,7 @@ export let clampPointInsideRect = (
     };
 };
 
-export let isTileOnContainerBorder = (
+export const isTileOnContainerBorder = (
     tilePos: Mtk.Rectangle,
     container: Mtk.Rectangle,
 ): {
@@ -38,15 +38,15 @@ export let isTileOnContainerBorder = (
     isBottom: boolean;
 } => {
     // compare two values and return true if their are equal with a max error of 2
-    let almostEqual = (first: number, second: number) =>
+    const almostEqual = (first: number, second: number) =>
         Math.abs(first - second) <= 1;
-    let isLeft = almostEqual(tilePos.x, container.x);
-    let isTop = almostEqual(tilePos.y, container.y);
-    let isRight = almostEqual(
+    const isLeft = almostEqual(tilePos.x, container.x);
+    const isTop = almostEqual(tilePos.y, container.y);
+    const isRight = almostEqual(
         tilePos.x + tilePos.width,
         container.x + container.width,
     );
-    let isBottom = almostEqual(
+    const isBottom = almostEqual(
         tilePos.y + tilePos.height,
         container.y + container.height,
     );
@@ -66,18 +66,18 @@ export type TileGapsInfo = {
     isLeft: boolean;
 };
 
-export let buildTileGaps = (
+export const buildTileGaps = (
     tilePos: Mtk.Rectangle,
     innerGaps: Clutter.Margin,
     outerGaps: Clutter.Margin,
     container: Mtk.Rectangle,
     scalingFactor: number = 1,
 ): TileGapsInfo => {
-    let { isTop, isRight, isBottom, isLeft } = isTileOnContainerBorder(
+    const { isTop, isRight, isBottom, isLeft } = isTileOnContainerBorder(
         tilePos,
         container,
     );
-    let margin = new Clutter.Margin();
+    const margin = new Clutter.Margin();
     margin.top = (isTop ? outerGaps.top : innerGaps.top / 2) * scalingFactor;
     margin.bottom =
         (isBottom ? outerGaps.bottom : innerGaps.bottom / 2) * scalingFactor;
@@ -95,8 +95,8 @@ export let buildTileGaps = (
     };
 };
 
-export let getMonitorScalingFactor = (monitorIndex: number) => {
-    let scalingFactor = St.ThemeContext.get_for_stage(
+export const getMonitorScalingFactor = (monitorIndex: number) => {
+    const scalingFactor = St.ThemeContext.get_for_stage(
         global.get_stage(),
     ).get_scale_factor();
     if (scalingFactor === 1)
@@ -104,15 +104,15 @@ export let getMonitorScalingFactor = (monitorIndex: number) => {
     return scalingFactor;
 };
 
-export let getScalingFactorOf = (widget: St.Widget): [boolean, number] => {
-    let [hasReference, scalingReference] = widget
+export const getScalingFactorOf = (widget: St.Widget): [boolean, number] => {
+    const [hasReference, scalingReference] = widget
         .get_theme_node()
         .lookup_length('scaling-reference', true);
     // if the reference is missing, then the parent opted out of scaling the child
     if (!hasReference) return [true, 1];
     // if the scalingReference is not 1, then the scaling factor is already applied on styles (but not on width and height)
 
-    let [hasValue, monitorScalingFactor] = widget
+    const [hasValue, monitorScalingFactor] = widget
         .get_theme_node()
         .lookup_length('monitor-scaling-factor', true);
     if (!hasValue) return [true, 1];
@@ -120,7 +120,7 @@ export let getScalingFactorOf = (widget: St.Widget): [boolean, number] => {
     return [scalingReference !== 1, monitorScalingFactor / scalingReference];
 };
 
-export let enableScalingFactorSupport = (
+export const enableScalingFactorSupport = (
     widget: St.Widget,
     monitorScalingFactor?: number,
 ) => {
@@ -128,7 +128,7 @@ export let enableScalingFactorSupport = (
     widget.set_style(`${getScalingFactorSupportString(monitorScalingFactor)};`);
 };
 
-export let getScalingFactorSupportString = (monitorScalingFactor: number) => {
+export const getScalingFactorSupportString = (monitorScalingFactor: number) => {
     return `scaling-reference: 1px; monitor-scaling-factor: ${monitorScalingFactor}px`;
 };
 
@@ -144,7 +144,7 @@ export function getWindowsOfMonitor(monitor: Monitor): Meta.Window[] {
 }
 
 export function buildMarginOf(value: number): Clutter.Margin {
-    let margin = new Clutter.Margin();
+    const margin = new Clutter.Margin();
     margin.top = value;
     margin.bottom = value;
     margin.left = value;
@@ -158,7 +158,7 @@ export function buildMargin(params: {
     left?: number;
     right?: number;
 }): Clutter.Margin {
-    let margin = new Clutter.Margin();
+    const margin = new Clutter.Margin();
     if (params.top) margin.top = params.top;
     if (params.bottom) margin.bottom = params.bottom;
     if (params.left) margin.left = params.left;
@@ -187,7 +187,7 @@ export function buildBlurEffect(sigma: number): Shell.BlurEffect {
     // The sigma in Shell.BlurEffect should be replaced by radius. Since the sigma value
     // is radius / 2.0, the radius value will be sigma * 2.0.
 
-    let effect = new Shell.BlurEffect();
+    const effect = new Shell.BlurEffect();
     effect.set_mode(Shell.BlurMode.BACKGROUND); // blur what is behind the widget
     effect.set_brightness(1);
     if (effect.set_radius) {
@@ -200,7 +200,7 @@ export function buildBlurEffect(sigma: number): Shell.BlurEffect {
 }
 
 function getTransientOrParent(window: Meta.Window): Meta.Window {
-    let transient = window.get_transient_for();
+    const transient = window.get_transient_for();
     return window.is_attached_dialog() && transient !== null
         ? transient
         : window;
