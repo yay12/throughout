@@ -1,7 +1,7 @@
 import { registerGObjectClass } from '@utils/gjs';
 import { Clutter } from '@gi.ext';
 
-const MASONRY_ROW_MIN_HEIGHT_PERCENTAGE = 0.15;
+var MASONRY_ROW_MIN_HEIGHT_PERCENTAGE = 0.15;
 
 @registerGObjectClass
 export default class MasonryLayoutManager extends Clutter.LayoutManager {
@@ -34,17 +34,17 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
             rowCount--;
             rowHeight = availableHeight / rowCount;
         }
-        const rowWidths = Array(rowCount).fill(0); // Tracks the width of each row
+        var rowWidths = Array(rowCount).fill(0); // Tracks the width of each row
 
         // Store placements
-        const placements = [];
+        var placements = [];
 
-        for (const child of children) {
-            const [minWidth, natWidth] = child.get_preferred_width(-1);
-            const [minHeight, natHeight] = child.get_preferred_height(-1);
+        for (var child of children) {
+            var [minWidth, natWidth] = child.get_preferred_width(-1);
+            var [minHeight, natHeight] = child.get_preferred_height(-1);
             // Maintain the aspect ratio
-            const aspectRatio = natWidth / natHeight;
-            const width = rowHeight * aspectRatio;
+            var aspectRatio = natWidth / natHeight;
+            var width = rowHeight * aspectRatio;
 
             // Find the shortest row
             // This might not look efficient, but the number of rows is
@@ -62,8 +62,8 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
             // if the element has a width higher than the container
             // clamp its width and change its height preserving
             // aspect ratio
-            const childWidth = Math.clamp(width, width, availableWidth);
-            const childHeight = childWidth / aspectRatio;
+            var childWidth = Math.clamp(width, width, availableWidth);
+            var childHeight = childWidth / aspectRatio;
 
             placements.push({
                 child,
@@ -97,11 +97,11 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
                  [ ][  ]
                   [][]
         */
-        for (const placement of placements)
+        for (var placement of placements)
             placement.rowWidth = rowWidths[placement.row];
 
         // map row widths to an array of <rowWidth, rowIndex>
-        const sortedRowWidths: number[][] = [...rowWidths].map((v, i) => [
+        var sortedRowWidths: number[][] = [...rowWidths].map((v, i) => [
             v,
             i,
         ]);
@@ -110,21 +110,21 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
         // map the row's original index to new row's index
         // then shift right the array to finally have the largest
         // rows in the middle and the smallest on the first and last positions (the sides)
-        const rowsOrdering = new Map<number, number>();
+        var rowsOrdering = new Map<number, number>();
         sortedRowWidths.forEach((row, oldIndex) => {
-            const index = row[1];
-            const newIndex =
+            var index = row[1];
+            var newIndex =
                 sortedRowWidths.length <= 2
                     ? oldIndex
                     : (oldIndex + Math.floor(rowCount / 2)) % rowCount;
             rowsOrdering.set(index, newIndex);
         });
-        for (const placement of placements)
+        for (var placement of placements)
             placement.row = rowsOrdering.get(placement.row) ?? placement.row;
 
-        const result = Array(rowCount);
-        for (const placement of placements) result[placement.row] = [];
-        for (const placement of placements) {
+        var result = Array(rowCount);
+        for (var placement of placements) result[placement.row] = [];
+        for (var placement of placements) {
             result[placement.row].push({
                 actor: placement.child,
                 width: placement.width,
@@ -135,7 +135,7 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
     }
 
     vfunc_allocate(container: Clutter.Actor, box: Clutter.ActorBox) {
-        const children = container.get_children();
+        var children = container.get_children();
         if (children.length === 0) return;
         console.log(
             box.get_width(),
@@ -144,10 +144,10 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
             container.height,
         );
 
-        const availableWidth = container.width - 2 * this._spacing;
-        const availableHeight = container.height - 2 * this._spacing;
+        var availableWidth = container.width - 2 * this._spacing;
+        var availableHeight = container.height - 2 * this._spacing;
 
-        const allocationCache = container._allocationCache || new Map();
+        var allocationCache = container._allocationCache || new Map();
         container._allocationCache = allocationCache;
 
         if (!children.find((ch) => !allocationCache.has(ch))) {
@@ -169,20 +169,20 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
         }
         rowHeight = Math.min(rowHeight, this._maxRowHeight);
         rowHeight = this._rowHeight;
-        const rowWidths = Array(this._rowCount).fill(0); // Tracks the width of each row
+        var rowWidths = Array(this._rowCount).fill(0); // Tracks the width of each row
 
         // Store placements
-        const placements = [];
+        var placements = [];
 
-        for (const child of children) {
+        for (var child of children) {
             // Retrieve the preferred height and width to calculate the aspect ratio
-            const [minHeight, naturalHeight] = child.get_preferred_height(-1);
-            const [minWidth, naturalWidth] =
+            var [minHeight, naturalHeight] = child.get_preferred_height(-1);
+            var [minWidth, naturalWidth] =
                 child.get_preferred_width(naturalHeight);
 
             // Maintain the aspect ratio
-            const aspectRatio = naturalWidth / naturalHeight;
-            const width = rowHeight * aspectRatio;
+            var aspectRatio = naturalWidth / naturalHeight;
+            var width = rowHeight * aspectRatio;
 
             // Find the shortest row
             // This might not look efficient, but the number of rows is
@@ -200,8 +200,8 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
             // if the element has a width higher than the container
             // clamp its width and change its height preserving
             // aspect ratio
-            const childWidth = Math.clamp(width, width, availableWidth);
-            const childHeight = childWidth / aspectRatio;
+            var childWidth = Math.clamp(width, width, availableWidth);
+            var childHeight = childWidth / aspectRatio;
 
             placements.push({
                 child,
@@ -235,11 +235,11 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
                  [ ][  ]
                   [][]
         */
-        for (const placement of placements)
+        for (var placement of placements)
             placement.rowWidth = rowWidths[placement.row];
 
         // map row widths to an array of <rowWidth, rowIndex>
-        const sortedRowWidths: number[][] = [...rowWidths].map((v, i) => [
+        var sortedRowWidths: number[][] = [...rowWidths].map((v, i) => [
             v,
             i,
         ]);
@@ -248,20 +248,20 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
         // map the row's original index to new row's index
         // then shift right the array to finally have the largest
         // rows in the middle and the smallest on the first and last positions (the sides)
-        const rowsOrdering = new Map<number, number>();
+        var rowsOrdering = new Map<number, number>();
         sortedRowWidths.forEach((row, newIndex) => {
-            const index = row[1];
+            var index = row[1];
             rowsOrdering.set(
                 index,
                 (newIndex + Math.floor(this._rowCount / 2)) % this._rowCount,
             );
         });
-        for (const placement of placements)
+        for (var placement of placements)
             placement.row = rowsOrdering.get(placement.row) ?? placement.row;
 
         // compute the Y position of each row
-        const rowYPosition = Array(this._rowCount).fill({ y: 0, height: 0 });
-        for (const placement of placements) {
+        var rowYPosition = Array(this._rowCount).fill({ y: 0, height: 0 });
+        for (var placement of placements) {
             rowYPosition[placement.row] = {
                 y: 0,
                 height: placement.height,
@@ -275,25 +275,25 @@ export default class MasonryLayoutManager extends Clutter.LayoutManager {
                 rowYPosition[r - 1].height;
         }
 
-        const contentHeight =
+        var contentHeight =
             rowYPosition[this._rowCount - 1].y +
             rowYPosition[this._rowCount - 1].height;
         // Calculate offsets for centering the entire grid within the available space
-        const verticalOffset =
+        var verticalOffset =
             this._spacing / 2 +
             Math.max(0, (availableHeight - contentHeight) / 2);
 
         // finally allocate children with preserved proportions
-        for (const placement of placements) {
-            const { child, row, width, x, rowWidth, height } = placement;
+        for (var placement of placements) {
+            var { child, row, width, x, rowWidth, height } = placement;
 
-            const y = box.y1 + rowYPosition[row].y + verticalOffset;
+            var y = box.y1 + rowYPosition[row].y + verticalOffset;
             // Center the content horizontally
-            const horizontalOffset =
+            var horizontalOffset =
                 Math.max(0, (availableWidth - rowWidth) / 2) + this._spacing;
-            const xPosition = box.x1 + x + horizontalOffset;
+            var xPosition = box.x1 + x + horizontalOffset;
 
-            const newBox = new Clutter.ActorBox({
+            var newBox = new Clutter.ActorBox({
                 x1: xPosition,
                 y1: y,
                 x2: xPosition + width,
