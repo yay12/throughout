@@ -9,7 +9,7 @@ import TilePreviewWithWindow from './tilePreviewWithWindow';
 import MetaWindowGroup from './MetaWindowGroup';
 import { _ } from '../../translations';
 
-let debug = logger('MultipleWindowsIcon');
+const debug = logger('MultipleWindowsIcon');
 
 @registerGObjectClass
 export default class MultipleWindowsIcon extends LayoutWidget<TilePreviewWithWindow> {
@@ -39,14 +39,14 @@ export default class MultipleWindowsIcon extends LayoutWidget<TilePreviewWithWin
         });
 
         this._previews.forEach((preview, index) => {
-            let window = params.windows[index];
+            const window = params.windows[index];
             if (!window) {
                 // bad input given to the constructor!
                 preview.hide();
                 return;
             }
 
-            let winClone = new Clutter.Clone({
+            const winClone = new Clutter.Clone({
                 source: window.get_compositor_private(),
                 width: preview.innerWidth,
                 height: preview.innerHeight,
