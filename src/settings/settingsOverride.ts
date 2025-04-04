@@ -38,7 +38,7 @@ export default class SettingsOverride {
     */
     private _overriddenKeysToJSON(): string {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let obj: any = {};
+        const obj: any = {};
         this._overriddenKeys.forEach((override, schemaId) => {
             obj[schemaId] = {};
             override.forEach((oldValue, key) => {
@@ -51,16 +51,16 @@ export default class SettingsOverride {
     private _jsonToOverriddenKeys(
         json: string,
     ): Map<string, Map<string, GLib.Variant>> {
-        let result: Map<string, Map<string, GLib.Variant>> = new Map();
+        const result: Map<string, Map<string, GLib.Variant>> = new Map();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let obj: any = JSON.parse(json);
+        const obj: any = JSON.parse(json);
 
-        for (let schemaId in obj) {
-            let schemaMap = new Map();
+        for (const schemaId in obj) {
+            const schemaMap = new Map();
             result.set(schemaId, schemaMap);
 
-            let overrideObj = obj[schemaId];
-            for (let key in overrideObj) {
+            const overrideObj = obj[schemaId];
+            for (const key in overrideObj) {
                 schemaMap.set(
                     key,
                     GLib.Variant.parse(null, overrideObj[key], null, null),
@@ -76,16 +76,16 @@ export default class SettingsOverride {
         keyToOverride: string,
         newValue: GLib.Variant,
     ): GLib.Variant | null {
-        let schemaId = giosettings.schemaId;
-        let schemaMap = this._overriddenKeys.get(schemaId) || new Map();
+        const schemaId = giosettings.schemaId;
+        const schemaMap = this._overriddenKeys.get(schemaId) || new Map();
         if (!this._overriddenKeys.has(schemaId))
             this._overriddenKeys.set(schemaId, schemaMap);
 
-        let oldValue = schemaMap.has(keyToOverride)
+        const oldValue = schemaMap.has(keyToOverride)
             ? schemaMap.get(keyToOverride)
             : giosettings.get_value(keyToOverride);
         // @ts-expect-error "Variant has a type which is not known here"
-        let res = giosettings.set_value(keyToOverride, newValue);
+        const res = giosettings.set_value(keyToOverride, newValue);
         if (!res) return null;
 
         if (!schemaMap.has(keyToOverride)) {
@@ -101,14 +101,14 @@ export default class SettingsOverride {
         giosettings: Gio.Settings,
         keyToOverride: string,
     ): GLib.Variant | null {
-        let overridden = this._overriddenKeys.get(giosettings.schemaId);
+        const overridden = this._overriddenKeys.get(giosettings.schemaId);
         if (!overridden) return null;
 
-        let oldValue = overridden.get(keyToOverride);
+        const oldValue = overridden.get(keyToOverride);
         if (!oldValue) return null;
 
         // @ts-expect-error "Variant has an unkown type"
-        let res = giosettings.set_value(keyToOverride, oldValue);
+        const res = giosettings.set_value(keyToOverride, oldValue);
 
         if (res) {
             overridden.delete(keyToOverride);
@@ -122,19 +122,19 @@ export default class SettingsOverride {
     }
 
     public restoreAll() {
-        let schemaToDelete: string[] = [];
+        const schemaToDelete: string[] = [];
         this._overriddenKeys.forEach(
             (map: Map<string, GLib.Variant>, schemaId: string) => {
-                let giosettings = new Gio.Settings({ schemaId });
-                let overridden = this._overriddenKeys.get(
+                const giosettings = new Gio.Settings({ schemaId });
+                const overridden = this._overriddenKeys.get(
                     giosettings.schemaId,
                 );
                 if (!overridden) return;
 
-                let toDelete: string[] = [];
+                const toDelete: string[] = [];
                 overridden.forEach((oldValue: GLib.Variant, key: string) => {
                     // @ts-expect-error "Variant has an unkown type"
-                    let done = giosettings.set_value(key, oldValue);
+                    const done = giosettings.set_value(key, oldValue);
                     if (done) toDelete.push(key);
                 });
                 toDelete.forEach((key) => overridden.delete(key));
