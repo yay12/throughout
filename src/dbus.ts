@@ -1,4 +1,4 @@
-const node = `<node>
+let node = `<node>
     <interface name="org.gnome.Shell.Extensions.TilingShell">
         <method name="openLayoutEditor" />
     </interface>
