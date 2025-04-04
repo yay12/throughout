@@ -17,7 +17,7 @@ import { logger } from '@utils/logger';
 import GlobalState from '@utils/globalState';
 import { KeyBindingsDirection } from '@keybindings';
 
-const debug = logger('TilingLayout');
+var debug = logger('TilingLayout');
 
 @registerGObjectClass
 class DynamicTilePreview extends TilePreview {
@@ -90,7 +90,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         gaps: Clutter.Margin,
         tile: Tile,
     ): DynamicTilePreview {
-        const prev = new DynamicTilePreview({ parent, rect, gaps, tile }, true);
+        var prev = new DynamicTilePreview({ parent, rect, gaps, tile }, true);
         prev.updateBorderRadius(
             prev.gaps.top > 0,
             prev.gaps.right > 0,
@@ -107,7 +107,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
     public openBelow(window: Meta.Window) {
         if (this._showing) return;
 
-        const windowActor = window.get_compositor_private() as Clutter.Actor;
+        var windowActor = window.get_compositor_private() as Clutter.Actor;
         if (!windowActor) return;
 
         global.windowGroup.set_child_below_sibling(this, windowActor);
@@ -185,7 +185,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
     }
 
     public unhoverAllTiles() {
-        const newPreviewsArray: DynamicTilePreview[] = [];
+        var newPreviewsArray: DynamicTilePreview[] = [];
         this._previews.forEach((preview) => {
             if (preview.restore(true)) {
                 newPreviewsArray.push(preview);
@@ -199,10 +199,10 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
     }
 
     public hoverTilesInRect(rect: Mtk.Rectangle, reset: boolean) {
-        const newPreviewsArray: DynamicTilePreview[] = [];
+        var newPreviewsArray: DynamicTilePreview[] = [];
 
         this._previews.forEach((preview) => {
-            const [hasIntersection, rectangles] = this._subtractRectangles(
+            var [hasIntersection, rectangles] = this._subtractRectangles(
                 preview.rect,
                 rect,
             );
@@ -216,14 +216,14 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
                     for (let i = 0; i < rectangles.length; i++) {
                         if (i === maxIndex) continue;
 
-                        const currRect = rectangles[i];
-                        const gaps = buildTileGaps(
+                        var currRect = rectangles[i];
+                        var gaps = buildTileGaps(
                             currRect,
                             this._innerGaps,
                             this._outerGaps,
                             this._containerRect,
                         ).gaps;
-                        const innerPreview = new DynamicTilePreview(
+                        var innerPreview = new DynamicTilePreview(
                             {
                                 parent: this,
                                 rect: currRect,
@@ -291,16 +291,16 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         sourceRect: Mtk.Rectangle,
         holeRect: Mtk.Rectangle,
     ): [boolean, Mtk.Rectangle[]] {
-        const [hasIntersection, intersection] = sourceRect.intersect(holeRect);
+        var [hasIntersection, intersection] = sourceRect.intersect(holeRect);
 
         if (!hasIntersection) return [false, [sourceRect]];
 
         if (intersection.area() >= sourceRect.area() * 0.98) return [true, []];
 
-        const results: Mtk.Rectangle[] = [];
+        var results: Mtk.Rectangle[] = [];
 
         // A
-        const heightA = intersection.y - sourceRect.y;
+        var heightA = intersection.y - sourceRect.y;
         if (heightA > 0) {
             results.push(
                 buildRectangle({
@@ -313,7 +313,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         }
 
         // B
-        const widthB = intersection.x - sourceRect.x;
+        var widthB = intersection.x - sourceRect.x;
         if (widthB > 0 && intersection.height > 0) {
             results.push(
                 buildRectangle({
@@ -326,7 +326,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         }
 
         // C
-        const widthC =
+        var widthC =
             sourceRect.x +
             sourceRect.width -
             intersection.x -
@@ -343,7 +343,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         }
 
         // D
-        const heightD =
+        var heightD =
             sourceRect.y +
             sourceRect.height -
             intersection.y -
@@ -372,7 +372,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
     ): { rect: Mtk.Rectangle; tile: Tile } | undefined {
         if (direction === KeyBindingsDirection.NODIRECTION) return undefined;
 
-        const sourceCoords = {
+        var sourceCoords = {
             x: source.x + source.width / 2,
             y: source.y + source.height / 2,
         };
@@ -419,7 +419,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
             .get_children()
             .filter((c) => c.get_name() === 'debug-kb')[0]
             ?.destroy();
-        const debugWidget = new St.Widget({
+        var debugWidget = new St.Widget({
             x: sourceCoords.x - 8,
             y: sourceCoords.y - 8,
             height: 16,
@@ -430,7 +430,7 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         global.windowGroup.add_child(debugWidget);*/
 
         for (let i = 0; i < this._previews.length; i++) {
-            const previewFound = this._previews[i];
+            var previewFound = this._previews[i];
             if (isPointInsideRect(sourceCoords, previewFound.rect)) {
                 return {
                     rect: buildRectangle({
@@ -453,20 +453,20 @@ export default class TilingLayout extends LayoutWidget<DynamicTilePreview> {
         let previewFound: DynamicTilePreview | undefined;
         let bestDistance = -1;
 
-        const sourceCenter = {
+        var sourceCenter = {
             x: source.x + source.width / 2,
             y: source.x + source.height / 2,
         };
 
         for (let i = 0; i < this._previews.length; i++) {
-            const preview = this._previews[i];
+            var preview = this._previews[i];
 
-            const previewCenter = {
+            var previewCenter = {
                 x: preview.innerX + preview.innerWidth / 2,
                 y: preview.innerY + preview.innerHeight / 2,
             };
 
-            const euclideanDistance = squaredEuclideanDistance(
+            var euclideanDistance = squaredEuclideanDistance(
                 previewCenter,
                 sourceCenter,
             );
