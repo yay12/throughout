@@ -5,7 +5,7 @@ import GlobalState from '@utils/globalState';
 import Tile from '@components/layout/Tile';
 import { logger } from '@utils/logger';
 
-let debug = logger('TilePreview');
+const debug = logger('TilePreview');
 
 // export module TilePreview {
 export interface TilePreviewConstructorProperties
@@ -38,7 +38,7 @@ export default class TilePreview extends St.Widget {
     }
 
     public set gaps(gaps: Clutter.Margin) {
-        let [, scalingFactor] = getScalingFactorOf(this);
+        const [, scalingFactor] = getScalingFactorOf(this);
         this._gaps.top = gaps.top * scalingFactor;
         this._gaps.right = gaps.right * scalingFactor;
         this._gaps.bottom = gaps.bottom * scalingFactor;
@@ -57,10 +57,10 @@ export default class TilePreview extends St.Widget {
         this.remove_style_class_name('bottom-left-border-radius');
         this.remove_style_class_name('custom-tile-preview');
 
-        let topLeft = hasNeighborTop && hasNeighborLeft;
-        let topRight = hasNeighborTop && hasNeighborRight;
-        let bottomRight = hasNeighborBottom && hasNeighborRight;
-        let bottomLeft = hasNeighborBottom && hasNeighborLeft;
+        const topLeft = hasNeighborTop && hasNeighborLeft;
+        const topRight = hasNeighborTop && hasNeighborRight;
+        const bottomRight = hasNeighborBottom && hasNeighborRight;
+        const bottomLeft = hasNeighborBottom && hasNeighborLeft;
 
         if (topLeft) this.add_style_class_name('top-left-border-radius');
         if (topRight) this.add_style_class_name('top-right-border-radius');
@@ -110,7 +110,7 @@ export default class TilePreview extends St.Widget {
     public open(ease: boolean = false, position?: Mtk.Rectangle) {
         if (position) this._rect = position;
 
-        let fadeInMove = this._showing;
+        const fadeInMove = this._showing;
         this._showing = true;
         this.show();
         if (fadeInMove) {
@@ -140,7 +140,7 @@ export default class TilePreview extends St.Widget {
         position?: Mtk.Rectangle,
     ) {
         if (this.get_parent() === global.windowGroup) {
-            let windowActor =
+            const windowActor =
                 window.get_compositor_private() as Clutter.Actor;
             if (!windowActor) return;
             global.windowGroup.set_child_below_sibling(this, windowActor);
@@ -155,7 +155,7 @@ export default class TilePreview extends St.Widget {
         position?: Mtk.Rectangle,
     ) {
         if (this.get_parent() === global.windowGroup) {
-            /* let windowActor =
+            /* const windowActor =
                 window.get_compositor_private() as Clutter.Actor;
             if (!windowActor) return;*/
             global.windowGroup.set_child_above_sibling(this, null);
