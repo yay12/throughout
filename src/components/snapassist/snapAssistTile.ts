@@ -5,9 +5,9 @@ import { St, Clutter, Mtk } from '@gi.ext';
 import { getScalingFactorOf } from '@utils/ui';
 import { logger } from '@utils/logger';
 
-let debug = logger('SnapAssistTile');
+const debug = logger('SnapAssistTile');
 
-let MIN_RADIUS = 2;
+const MIN_RADIUS = 2;
 
 /**
  * SnapAssistTile
@@ -40,23 +40,23 @@ export default class SnapAssistTile extends TilePreview {
             tile: params.tile,
         });
 
-        let isLeft = this._tile.x <= 0.001;
-        let isTop = this._tile.y <= 0.001;
-        let isRight = this._tile.x + this._tile.width >= 0.99;
-        let isBottom = this._tile.y + this._tile.height >= 0.99;
+        const isLeft = this._tile.x <= 0.001;
+        const isTop = this._tile.y <= 0.001;
+        const isRight = this._tile.x + this._tile.width >= 0.99;
+        const isBottom = this._tile.y + this._tile.height >= 0.99;
 
-        let [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
+        const [alreadyScaled, scalingFactor] = getScalingFactorOf(this);
         // the value got is already scaled if the tile is on primary monitor
-        let radiusValue =
+        const radiusValue =
             (alreadyScaled ? 1 : scalingFactor) *
             (this.get_theme_node().get_length('border-radius-value') /
                 (alreadyScaled ? scalingFactor : 1));
-        let borderWidthValue =
+        const borderWidthValue =
             (alreadyScaled ? 1 : scalingFactor) *
             (this.get_theme_node().get_length('border-width-value') /
                 (alreadyScaled ? scalingFactor : 1));
         // top-left top-right bottom-right bottom-left
-        let radius = [
+        const radius = [
             this._gaps.top === 0 && this._gaps.left === 0 ? 0 : MIN_RADIUS,
             this._gaps.top === 0 && this._gaps.right === 0 ? 0 : MIN_RADIUS,
             this._gaps.bottom === 0 && this._gaps.right === 0 ? 0 : MIN_RADIUS,
@@ -71,7 +71,7 @@ export default class SnapAssistTile extends TilePreview {
         // look like the border width is double the size.
         // The initial width takes into account there are no gaps,
         // tiles are very near, so the width is half the final one.
-        let borderWidth = [
+        const borderWidth = [
             borderWidthValue,
             borderWidthValue,
             borderWidthValue,
@@ -112,7 +112,7 @@ export default class SnapAssistTile extends TilePreview {
 
     _applyStyle() {
         // the tile will be light or dark, following the text color
-        let [hasColor, { red, green, blue }] =
+        const [hasColor, { red, green, blue }] =
             this.get_theme_node().lookup_color('color', true);
         if (!hasColor) return;
         // if the text color is light, apply light theme, otherwise apply dark theme
