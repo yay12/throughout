@@ -16,7 +16,7 @@ export default class HoverLine extends St.Widget {
 
         this._hoveredTile = null;
 
-        let [, scalingFactor] = getScalingFactorOf(this);
+        const [, scalingFactor] = getScalingFactorOf(this);
         this._size = 16 * scalingFactor;
 
         this.hide();
@@ -40,10 +40,10 @@ export default class HoverLine extends St.Widget {
     public handleMouseMove(tile: EditableTilePreview, x: number, y: number) {
         this._hoveredTile = tile;
 
-        let modifier = Shell.Global.get().get_pointer()[2];
+        const modifier = Shell.Global.get().get_pointer()[2];
 
         // split horizontally when CTRL is NOT pressed, split vertically instead
-        let splitHorizontally =
+        const splitHorizontally =
             (modifier & Clutter.ModifierType.CONTROL_MASK) === 0;
         this._drawLine(splitHorizontally, x, y);
     }
@@ -57,9 +57,9 @@ export default class HoverLine extends St.Widget {
             return GLib.SOURCE_CONTINUE;
         }
 
-        let [x, y, modifier] = global.get_pointer();
+        const [x, y, modifier] = global.get_pointer();
         // split horizontally when CTRL is NOT pressed, split vertically instead
-        let splitHorizontally =
+        const splitHorizontally =
             (modifier & Clutter.ModifierType.CONTROL_MASK) === 0;
 
         this._drawLine(
@@ -75,7 +75,7 @@ export default class HoverLine extends St.Widget {
         if (!this._hoveredTile) return;
 
         if (splitHorizontally) {
-            let newX = x - this._size / 2;
+            const newX = x - this._size / 2;
             if (
                 newX < this._hoveredTile.x ||
                 newX + this._size >
@@ -86,7 +86,7 @@ export default class HoverLine extends St.Widget {
             this.set_size(this._size, this._hoveredTile.height);
             this.set_position(newX, this._hoveredTile.y);
         } else {
-            let newY = y - this._size / 2;
+            const newY = y - this._size / 2;
             if (
                 newY < this._hoveredTile.y ||
                 newY + this._size >
