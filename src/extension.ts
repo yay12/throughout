@@ -29,7 +29,7 @@ import TilingShellWindowManager from '@components/windowManager/tilingShellWindo
 import ExtendedWindow from '@components/tilingsystem/extendedWindow';
 import { Extension } from '@polyfill';
 
-const debug = logger('extension');
+var debug = logger('extension');
 
 export default class TilingShellExtension extends Extension {
     private _indicator: Indicator | null;
@@ -152,7 +152,7 @@ export default class TilingShellExtension extends Extension {
         if (!this._signals) return;
 
         this._signals.connect(global.display, 'workareas-changed', () => {
-            const allMonitors = getMonitors();
+            var allMonitors = getMonitors();
             if (this._tilingManagers.length !== allMonitors.length) {
                 // a monitor was disconnected or a new one was connected
                 GlobalState.get().validate_selected_layouts();
@@ -173,7 +173,7 @@ export default class TilingShellExtension extends Extension {
             (_mutterSettings: Gio.Settings) => {
                 if (!_mutterSettings) return;
 
-                const fractionalScalingEnabled =
+                var fractionalScalingEnabled =
                     this._isFractionalScalingEnabled(_mutterSettings);
 
                 if (this._fractionalScalingEnabled === fractionalScalingEnabled)
@@ -221,9 +221,9 @@ export default class TilingShellExtension extends Extension {
                 this._keybindings,
                 'span-window-all-tiles',
                 (kb: KeyBindings, dp: Meta.Display) => {
-                    const window = dp.focus_window;
-                    const monitorIndex = window.get_monitor();
-                    const manager = this._tilingManagers[monitorIndex];
+                    var window = dp.focus_window;
+                    var monitorIndex = window.get_monitor();
+                    var manager = this._tilingManagers[monitorIndex];
                     if (manager) manager.onSpanAllTiles(window);
                 },
             );
@@ -269,7 +269,7 @@ export default class TilingShellExtension extends Extension {
                 this._keybindings,
                 'highlight-current-window',
                 (kb: KeyBindings, dp: Meta.Display) => {
-                    const focus_window = dp.get_focus_window();
+                    var focus_window = dp.get_focus_window();
                     getWindows(
                         global.workspaceManager.get_active_workspace(),
                     ).forEach((win) => {
@@ -290,7 +290,7 @@ export default class TilingShellExtension extends Extension {
             Settings,
             Settings.KEY_ACTIVE_SCREEN_EDGES,
             () => {
-                const gioSettings = new Gio.Settings({
+                var gioSettings = new Gio.Settings({
                     schema_id: 'org.gnome.mutter',
                 });
                 if (Settings.ACTIVE_SCREEN_EDGES) {
@@ -328,8 +328,8 @@ export default class TilingShellExtension extends Extension {
             OverriddenWindowMenu,
             'tile-clicked',
             (_, tile: Tile, window: Meta.Window) => {
-                const monitorIndex = window.get_monitor();
-                const manager = this._tilingManagers[monitorIndex];
+                var monitorIndex = window.get_monitor();
+                var manager = this._tilingManagers[monitorIndex];
                 if (manager) manager.onTileFromWindowMenu(tile, window);
             },
         );
@@ -353,7 +353,7 @@ export default class TilingShellExtension extends Extension {
         winActor: Meta.WindowActor,
         change: Meta.SizeChange,
     ) {
-        const window = winActor.metaWindow;
+        var window = winActor.metaWindow;
         if (
             window.wmClass === null ||
             change !== Meta.SizeChange.MAXIMIZE || // handle maximize changes only
@@ -365,7 +365,7 @@ export default class TilingShellExtension extends Extension {
         )
             return;
 
-        const prevWorkspace = window.get_workspace();
+        var prevWorkspace = window.get_workspace();
         // if it is the only window in the workspace, no new workspace is needed
         if (
             !prevWorkspace
@@ -385,9 +385,9 @@ export default class TilingShellExtension extends Extension {
         // @ts-expect-error Main.wm has "_sizeChangeWindowDone" function
         Main.wm._sizeChangeWindowDone(global.windowManager, winActor);
 
-        const wasActive = prevWorkspace.active;
+        var wasActive = prevWorkspace.active;
         // create a new workspace, do not focus it
-        const newWorkspace = global.workspace_manager.append_new_workspace(
+        var newWorkspace = global.workspace_manager.append_new_workspace(
             false,
             global.get_current_time(),
         );
@@ -401,10 +401,10 @@ export default class TilingShellExtension extends Extension {
     }
 
     private _onSizeChanged(wm: Shell.WM, winActor: Meta.WindowActor) {
-        const window = winActor.metaWindow;
+        var window = winActor.metaWindow;
 
         if (!window._queue_focus_ws) return;
-        const ws = window._queue_focus_ws;
+        var ws = window._queue_focus_ws;
         delete window._queue_focus_ws;
 
         console.log(`_onSizeChanged ${ws}`);
@@ -427,7 +427,7 @@ export default class TilingShellExtension extends Extension {
         direction: KeyBindingsDirection,
         spanFlag: boolean,
     ) {
-        const focus_window = display.get_focus_window();
+        var focus_window = display.get_focus_window();
         if (
             !focus_window ||
             !focus_window.has_focus() ||
@@ -455,7 +455,7 @@ export default class TilingShellExtension extends Extension {
             return;
         }
 
-        const monitorTilingManager =
+        var monitorTilingManager =
             this._tilingManagers[focus_window.get_monitor()];
         if (!monitorTilingManager) return;
 
@@ -480,12 +480,12 @@ export default class TilingShellExtension extends Extension {
                 displayDirection = Meta.DisplayDirection.UP;
                 break;
         }
-        const neighborMonitorIndex = display.get_monitor_neighbor_index(
+        var neighborMonitorIndex = display.get_monitor_neighbor_index(
             focus_window.get_monitor(),
             displayDirection,
         );
 
-        const success = monitorTilingManager.onKeyboardMoveWindow(
+        var success = monitorTilingManager.onKeyboardMoveWindow(
             focus_window,
             direction,
             false,
@@ -512,7 +512,7 @@ export default class TilingShellExtension extends Extension {
             (focus_window as ExtendedWindow).assignedTile = undefined;
         }
 
-        const neighborTilingManager =
+        var neighborTilingManager =
             this._tilingManagers[neighborMonitorIndex];
         if (!neighborTilingManager) return;
 
@@ -529,7 +529,7 @@ export default class TilingShellExtension extends Extension {
         display: Meta.Display,
         direction: KeyBindingsDirection | FocusSwitchDirection,
     ) {
-        const focus_window = display.get_focus_window();
+        var focus_window = display.get_focus_window();
 
         if (
             !focus_window ||
@@ -542,13 +542,13 @@ export default class TilingShellExtension extends Extension {
         let bestWindow: Meta.Window | undefined;
         let bestWindowDistance = -1;
 
-        const focusWindowRect = focus_window.get_frame_rect();
-        const focusWindowCenter = {
+        var focusWindowRect = focus_window.get_frame_rect();
+        var focusWindowCenter = {
             x: focusWindowRect.x + focusWindowRect.width / 2,
             y: focusWindowRect.y + focusWindowRect.height / 2,
         };
 
-        const windowList = filterUnfocusableWindows(
+        var windowList = filterUnfocusableWindows(
             focus_window.get_workspace().list_windows(),
         );
 
@@ -556,7 +556,7 @@ export default class TilingShellExtension extends Extension {
             .filter((win) => {
                 if (win === focus_window || win.minimized) return false;
 
-                const winRect = win.get_frame_rect();
+                var winRect = win.get_frame_rect();
                 switch (direction) {
                     case KeyBindingsDirection.RIGHT:
                         return winRect.x > focusWindowRect.x;
@@ -570,13 +570,13 @@ export default class TilingShellExtension extends Extension {
                 return false;
             })
             .forEach((win) => {
-                const winRect = win.get_frame_rect();
-                const winCenter = {
+                var winRect = win.get_frame_rect();
+                var winCenter = {
                     x: winRect.x + winRect.width / 2,
                     y: winRect.y + winRect.height / 2,
                 };
 
-                const euclideanDistance = squaredEuclideanDistance(
+                var euclideanDistance = squaredEuclideanDistance(
                     winCenter,
                     focusWindowCenter,
                 );
@@ -601,7 +601,7 @@ export default class TilingShellExtension extends Extension {
         display: Meta.Display,
         direction: FocusSwitchDirection,
     ) {
-        const focus_window = display.get_focus_window();
+        var focus_window = display.get_focus_window();
 
         if (
             !focus_window ||
@@ -611,11 +611,11 @@ export default class TilingShellExtension extends Extension {
         )
             return;
 
-        const windowList = filterUnfocusableWindows(
+        var windowList = filterUnfocusableWindows(
             focus_window.get_workspace().list_windows(),
         );
-        const focusParent = focus_window.get_transient_for() || focus_window;
-        const focusedIdx = windowList.findIndex((win) => {
+        var focusParent = focus_window.get_transient_for() || focus_window;
+        var focusedIdx = windowList.findIndex((win) => {
             // in case we are iterating over a modal dialog for our focused window
             return win === focusParent;
         });
@@ -642,7 +642,7 @@ export default class TilingShellExtension extends Extension {
     }
 
     private _onKeyboardUntileWindow(kb: KeyBindings, display: Meta.Display) {
-        const focus_window = display.get_focus_window();
+        var focus_window = display.get_focus_window();
         if (
             !focus_window ||
             !focus_window.has_focus() ||
@@ -656,7 +656,7 @@ export default class TilingShellExtension extends Extension {
         if (focus_window.get_maximized())
             focus_window.unmaximize(Meta.MaximizeFlags.BOTH);
 
-        const monitorTilingManager =
+        var monitorTilingManager =
             this._tilingManagers[focus_window.get_monitor()];
         if (!monitorTilingManager) return;
 
