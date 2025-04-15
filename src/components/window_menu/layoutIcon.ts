@@ -26,7 +26,7 @@ export default class LayoutIcon extends LayoutWidget<SnapAssistTile> {
             styleClass: 'layout-icon button',
         });
 
-        let [, scalingFactor] = getScalingFactorOf(this);
+        const [, scalingFactor] = getScalingFactorOf(this);
         width *= scalingFactor;
         height *= scalingFactor;
 
@@ -38,7 +38,7 @@ export default class LayoutIcon extends LayoutWidget<SnapAssistTile> {
         this.set_y_expand(false);
 
         importantTiles.forEach((t) => {
-            let preview = this._previews.find(
+            const preview = this._previews.find(
                 (snap) => snap.tile.x === t.x && snap.tile.y === t.y,
             );
             if (preview) preview.add_style_class_name('important');
