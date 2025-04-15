@@ -6,7 +6,7 @@ import { buildBlurEffect } from '@utils/ui';
 import Tile from '@components/layout/Tile';
 import { logger } from '@utils/logger';
 
-const debug = logger('SelectionTilePreview');
+let debug = logger('SelectionTilePreview');
 
 @registerGObjectClass
 export default class SelectionTilePreview extends TilePreview {
@@ -43,7 +43,7 @@ export default class SelectionTilePreview extends TilePreview {
         );
 
         this._recolor();
-        const styleChangedSignalID = St.ThemeContext.get_for_stage(
+        let styleChangedSignalID = St.ThemeContext.get_for_stage(
             global.get_stage(),
         ).connect('changed', () => {
             this._recolor();
@@ -71,7 +71,7 @@ export default class SelectionTilePreview extends TilePreview {
     _init() {
         super._init();
 
-        const effect = buildBlurEffect(48);
+        let effect = buildBlurEffect(48);
         effect.set_name('blur');
         effect.set_enabled(this._blur);
         this.add_effect(effect);
@@ -82,11 +82,11 @@ export default class SelectionTilePreview extends TilePreview {
     _recolor() {
         this.set_style(null);
 
-        const backgroundColor = this.get_theme_node()
+        let backgroundColor = this.get_theme_node()
             .get_background_color()
             .copy();
         // since an alpha value lower than 160 is not so much visible, enforce a minimum value of 160
-        const newAlpha = Math.max(
+        let newAlpha = Math.max(
             Math.min(backgroundColor.alpha + 35, 255),
             160,
         );
